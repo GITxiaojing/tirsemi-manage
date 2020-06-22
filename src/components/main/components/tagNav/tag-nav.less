@@ -1,0 +1,33 @@
+.tag-nav-comp {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    .tag-scroll-btn {
+        padding: 0 4px;
+        height: 100%;
+        background-color: #FFFFFF;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        top: 0;
+        border: 1px solid #F0F0F0;
+        &.left-btn {
+            left: 0;
+        }
+        &.right-btn {
+            right: 32px;
+            border-right: 1px solid #F0F0F0;
+        }
+    }
+    .tag-close-btn {
+        background-color: #FFFFFF;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 32px;
+        height: 100%;
+    }
+}

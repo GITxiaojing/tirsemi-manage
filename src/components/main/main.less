@@ -8,6 +8,11 @@
         width: 256px;
         height: 100%;
         background-color: #001529;
+        transition: all .2s ease-in-out;
+        &.collapsed {
+            width: 64px;
+            overflow: hidden;
+        }
     }
     .content-layout {
         flex: 1;
