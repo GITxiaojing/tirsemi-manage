@@ -11,14 +11,6 @@ module.exports = {
 		path: path.resolve(rootPath, 'dist'),
 		filename: '[name].js'
 	},
-	devtool: 'inline-source-map',
-	devServer: {
-		contentBase: path.resolve(rootPath, 'dist'),
-		host: '192.168.1.112',
-		port: 8080,
-		index: 'index.html',
-		hot: true
-	},
 	module: {
 		rules: [
 			{

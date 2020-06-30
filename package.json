@@ -4,17 +4,20 @@
   "description": "蒂娅之谜后台管理系统",
   "main": "index.js",
   "scripts": {
-    "init": "webpack --config ./build/webpack.base.config.js",
-    "dev": "webpack-dev-server --open chrome --config ./build/webpack.base.config.js",
+    "init": "webpack --config ./build/webpack.dev.config.js",
+    "dev": "webpack-dev-server --open chrome --config ./build/webpack.dev.config.js",
     "build": "",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "xiaojing",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.19.2",
+    "js-cookie": "^2.2.1",
     "view-design": "^4.2.0",
     "vue": "^2.6.11",
-    "vue-router": "^3.1.6"
+    "vue-router": "^3.1.6",
+    "vuex": "^3.4.0"
   },
   "devDependencies": {
     "babel-loader": "^8.1.0",

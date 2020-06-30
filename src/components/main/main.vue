@@ -1,7 +1,7 @@
 <template>
   <div class="main-page">
     <aside :class="'sider-layout' + (collapsed ? ' collapsed' : '')">
-      <side-menu :collapsed="collapsed" :menuList="menuList"></side-menu>
+      <side-menu :collapsed="collapsed" :menuList="menuList" :icon-size="20" @on-select="handleMenuSelect"></side-menu>
     </aside>
     <div class="content-layout">
       <header class="header-con">
@@ -42,21 +42,22 @@ export default {
   },
   computed: {
     menuList () {
-      return [{
-        name: 'home',
-        title: '首页'
-      }, {
-        name: 'components',
-        title: '组件'
-      }]
+      return this.$store.getters.menuList
     }
   },
   mounted() {
-
   },
   methods: {
     changeCollapsed (status) {
       this.collapsed = status
+    },
+    /**
+     * 菜单选择
+     */
+    handleMenuSelect (name) {
+     this.$router.push({
+       name: name
+     })
     }
   }
 }
