@@ -1,8 +1,7 @@
 const vueLoaderPlugin = require('vue-loader/lib/plugin')
 const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
 const rootPath = path.resolve(__dirname, '../')
-const webpack = require('webpack')
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 module.exports = {
 	mode: 'development',
@@ -47,13 +46,12 @@ module.exports = {
 		]
 	},
 	plugins: [
-		new vueLoaderPlugin(),
-		new HtmlWebpackPlugin({
-			title: 'tirsemi-manage',
-			filename: 'index.html',
-			template: path.resolve(rootPath, 'public/index.html')
-		}),
-		new webpack.HotModuleReplacementPlugin()
+		new vueLoaderPlugin()
+		// new BundleAnalyzerPlugin({
+		// 	analyzerMode: 'server',
+		// 	generateStatsFile: true,
+		// 	statsOptions: { source: false }
+		// })
 	],
 	resolve: {
 		alias: {

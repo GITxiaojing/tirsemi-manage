@@ -5,14 +5,14 @@
       <template v-for="item in menuList">
         <template v-if="item.children && item.children.length === 1">
           <sub-menu v-if="showChildren(item)" :key="`menu-${item.name}`" :parent-item="item" :icon-size="iconSize"></sub-menu>
-          <menu-item v-else :name="item.children[0].name" :key="`menu-${item.children[0].name}`">
+          <menu-item v-else :name="getNameOrHref(item, true)" :key="`menu-${item.children[0].name}`">
             <common-icon :size="iconSize" :type="item.children[0].icon"></common-icon>
             <span>{{showTitle(item.children[0])}}</span>
           </menu-item>
         </template>
         <template v-else>
           <sub-menu v-if="showChildren(item)" :key="`menu-${item.name}`" :parent-item="item" :icon-size="iconSize"></sub-menu>
-          <menu-item v-else :key="`menu-${item.name}`">
+          <menu-item v-else :key="`menu-${item.name}`" :name="getNameOrHref(item)">
             <common-icon :size="iconSize" :type="item.icon"></common-icon>
             <span>{{showTitle(item)}}</span>
           </menu-item>
@@ -23,7 +23,7 @@
       <template v-for="item in menuList">
           <collapsed-menu v-if="showChildren(item)" :key="`menu-${item.name}`" :menu="item" :icon-size="iconSize" @on-click="menuSelect"></collapsed-menu>
           <Tooltip transfer :theme="theme" :content="showTitle(item.children && item.children.length > 0 ? item.children[0] : item)" v-else :key="`drop-menu-${item.name}`" placement="right">
-              <span class="drop-menu-single" @click="menuSelect(item.name)"><common-icon :size="iconSize" :type="item.children[0].icon"></common-icon></span>
+              <span class="drop-menu-single" @click="menuSelect(getNameOrHref(item, true))"><common-icon :size="iconSize" :type="item.children[0].icon"></common-icon></span>
           </Tooltip>
       </template>
     </div>
@@ -34,6 +34,7 @@
 import SubMenu from "./sub-menu";
 import mixin from "./mixin";
 import collapsedMenu from './collapsed-menu'
+import { getUnion } from '@/utils/util'
 
 export default {
   name: "side-menu",
@@ -50,14 +51,18 @@ export default {
     },
     collapsed: Boolean,
     activeName: String,
-    openNames: {
-        type: Array,
-        default: () => []
-    },
     accordion: {
         type: Boolean,
         default: false
     }
+  },
+  data () {
+    return {
+      openNames: []
+    }
+  },
+  mounted () {
+    this.openNames = getUnion(this.openNames, this.activeName)
   },
   methods: {
     menuSelect(name) {

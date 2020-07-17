@@ -7,14 +7,14 @@
     <template v-for="item in children">
       <template v-if="item.children && item.children.length === 1">
           <sun-menu v-if="showChildren(item)" :parent-item="item" :key="`menu-${item.name}`"></sun-menu>
-          <menu-item v-else :name="item.children[0].name" :key="`menu-${item.children[0].name}`">
+          <menu-item v-else :name="getNameOrHref(item, true)" :key="`menu-${item.children[0].name}`">
             <common-icon :size="iconSize" :type="item.children[0].icon"></common-icon>
             <span>{{showTitle(item.children[0])}}</span>
           </menu-item>
       </template>
       <template v-else>
           <sun-menu v-if="showChildren(item)" :parent-item="item" :key="`menu-${item.name}`"></sun-menu>
-          <menu-item v-else :name="item.name" :key="`menu-${item.name}`">
+          <menu-item v-else :name="getNameOrHref(item)" :key="`menu-${item.name}`">
             <common-icon :size="iconSize" :type="item.icon"></common-icon>
             <span>{{showTitle(item)}}</span>
           </menu-item>

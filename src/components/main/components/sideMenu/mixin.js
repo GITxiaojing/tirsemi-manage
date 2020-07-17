@@ -26,6 +26,9 @@ export default {
         },
         showChildren(item) {
             return item.children && (item.children.length > 1 || (item.meta && item.meta.showAlways))
+        },
+        getNameOrHref (item, isChildren) {
+            return item.href ? `href_${item.href}` : (isChildren ? item.children[0].name : item.name)
         }
     }
 }

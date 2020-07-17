@@ -1,7 +1,7 @@
 <template>
   <div class="main-page">
     <aside :class="'sider-layout' + (collapsed ? ' collapsed' : '')">
-      <side-menu :collapsed="collapsed" :menuList="menuList" :icon-size="20" @on-select="handleMenuSelect"></side-menu>
+      <side-menu :collapsed="collapsed" :menu-list="menuList" :icon-size="20" @on-select="turnToPage" :active-name="$route.name"></side-menu>
     </aside>
     <div class="content-layout">
       <header class="header-con">
@@ -13,7 +13,7 @@
       </header>
       <div class="main-content">
         <nav class="tag-nav-wrapper">
-          <tag-nav :collapsed="collapsed"></tag-nav>
+          <tag-nav :collapsed="collapsed" :list="tagNavList" :value="$route" @on-click="handleClickTag" @on-close="handleTagClose"></tag-nav>
         </nav>
         <div class="content-wrapper">
           <router-view></router-view>
@@ -30,10 +30,15 @@ import User from './components/user'
 import Language from './components/language'
 import TagNav from './components/tagNav'
 import SideMenu from './components/sideMenu'
+import { mapMutations } from 'vuex'
+import routeUtil from '@/utils/routeUtil'
+import mixin from './components/sideMenu/mixin'
+import routers from '@/router/routes'
 
 export default {
   name: "Main",
   components: { HeaderBar, FullScreen, User, Language, TagNav, SideMenu },
+  mixins: [mixin],
   data() {
     return {
       collapsed: false,
@@ -43,21 +48,83 @@ export default {
   computed: {
     menuList () {
       return this.$store.getters.menuList
+    },
+    tagNavList () {
+      return this.$store.state.app.tagNavList
+    }
+  },
+  watch: {
+    '$route'(cur) {
+      this.setBreadcrumb(cur)
+      this.setTagNavList(routeUtil.calcTagNavList(this.tagNavList, cur))
+      let {name, meta, query, params} = cur
+      this.addTag({
+        route: {name, meta, query, params},
+        type: 'push'
+      })
     }
   },
   mounted() {
+    this.setTagNavList()
+    this.setHomeRoute(routers)
+    this.setBreadcrumb(this.$route)
+    if (!this.tagNavList.find(item => routeUtil.routeEqual(item, this.$route))) {
+      this.$router.push({
+        name: this.$config.homeName
+      })
+    }
+    let {name, meta, query, params} = this.$route
+    this.addTag({
+      route: {name, meta, query, params},
+      type: 'push'
+    })
   },
   methods: {
+    ...mapMutations([
+      'setBreadcrumb',
+      'setTagNavList',
+      'closeTag',
+      'setHomeRoute',
+      'addTag'
+    ]),
+    /**
+     * 改变菜单折叠状态
+     */
     changeCollapsed (status) {
       this.collapsed = status
     },
     /**
      * 菜单选择
      */
-    handleMenuSelect (name) {
+    turnToPage (name) {
      this.$router.push({
        name: name
      })
+    },
+    /**
+     * 点击标签
+     */
+    handleClickTag (item) {
+      this.$router.push({
+        name: item.name
+      })
+    },
+
+    /**
+     * 关闭标签
+     */
+    handleTagClose (result, type, route) {
+      console.log(result, type, route)
+      if (type !== 'others') {
+        if (type === 'all') {
+          this.turnToPage(this.$config.homeName)
+        } else {
+          if (routeUtil.routeEqual(this.$route, route)) {
+            this.closeTag(route)
+          }
+        }
+      }
+      this.setTagNavList(result)
     }
   }
 }

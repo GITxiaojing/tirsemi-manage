@@ -24,78 +24,43 @@
           v-for="item in list"
           :name="item.name"
           :key="item.id"
+          checkable
           size="large"
           type="dot"
           :color="isCurrentTag(item) ? 'primary' : 'default'"
           :closable="item.name !== $config.homeName"
-          @on-close="handleClose"
-          @click="changeTag"
-        >{{item.name}}</Tag>
+          @on-close="handleClose(item)"
+          @on-change="changeTag(item)"
+        >{{showTitle(item)}}</Tag>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import routeUtil from '@/utils/routeUtil'
+import beforeClose from '@/router/before-close'
+
 export default {
   name: "tag-nav",
   props: {
-    collapsed: Boolean
+    value: Object,
+    collapsed: Boolean,
+    list: {
+      type: Array,
+      default: () => []
+    }
   },
   data() {
     return {
-      list: [
-        {
-          id: 1,
-          name: "首页"
-        },
-        {
-          id: 2,
-          name: "组件"
-        },
-        {
-          id: 3,
-          name: "页面"
-        },
-        {
-          id: 4,
-          name: "页面"
-        },
-        {
-          id: 5,
-          name: "页面"
-        },
-        {
-          id: 6,
-          name: "页面"
-        },
-        {
-          id: 7,
-          name: "页面"
-        },
-        {
-          id: 8,
-          name: "页面"
-        },
-        {
-          id: 9,
-          name: "页面"
-        },
-        {
-          id: 10,
-          name: "页面"
-        },
-        {
-          id: 11,
-          name: "页面"
-        },
-        {
-          id: 12,
-          name: "页面"
-        }
-      ],
       scrollLeft: 0
     };
+  },
+  computed: {
+    currentRoute () {
+      let {name, meta, query, params} = this.value
+      return {name, meta, query, params}
+    }
   },
   watch: {
     collapsed (cur) {
@@ -105,6 +70,9 @@ export default {
     }
   },
   methods: {
+    showTitle (item) {
+      return routeUtil.showTitle(item)
+    },
     /**
      * 处理滚动事件
      */
@@ -121,7 +89,6 @@ export default {
     scrollToLeft(offset) {
       let outerWidth = this.$refs.scrollCon.offsetWidth;
       let bodyWidth = this.$refs.scrollBody.offsetWidth;
-      console.log(outerWidth, bodyWidth)
       if (offset > 0) {
         this.scrollLeft = Math.min(0, this.scrollLeft + offset);
       } else {
@@ -139,24 +106,49 @@ export default {
     /**
      * 选择关闭所有还是其他标签
      */
-    handleTagOption(name) {},
+    handleTagOption(name) {
+      if (name === 'other') {
+        let res = this.list.filter(item => {
+          return item.name === this.$config.homeName || routeUtil.routeEqual(this.currentRoute, item)
+        })
+        this.$emit('on-close', res, name)
+      } else {
+        let res = this.list.filter(item => {return item.name === this.$config.homeName})
+        this.$emit('on-close', res, name, this.currentRoute)
+      }
+    },
 
     /**
      * 判断是否是当前路由
      */
-    isCurrentTag(name) {
-      return false;
+    isCurrentTag(item) {
+      return routeUtil.routeEqual(this.currentRoute, item);
     },
 
     /**
      * 处理tag关闭事件
      */
-    handleClose(event, name) {},
+    handleClose(item) {
+      let flag = true
+      if (item.meta && item.meta.beforeCloseName && item.meta.beforeCloseName in beforeClose) {
+        beforeClose[item.meta.beforeCloseName].catch(
+          flag = false
+        )
+      }
+      if (flag) {
+        let res = this.list.filter(route => {
+          return !routeUtil.routeEqual(route, item)
+        })
+        this.$emit('on-close', res, undefined, item)
+      }
+    },
 
     /**
      * 切换tag
      */
-    changeTag() {},
+    changeTag(item) {
+      this.$emit('on-click', item)
+    },
 
     /**
      * 移动到可视区域

@@ -4,7 +4,12 @@
             <Icon type="md-menu" size="26"></Icon>
         </span>
         <div class="cus-bread-crumb">
-            33
+            <Breadcrumb>
+                <BreadcrumbItem v-for="item in breadcrumbList" :to="item.to" :key="`bread-item-${item.name}`">
+                    <common-icon :type="item.icon" :size="14"></common-icon>
+                    {{showTitle(item)}}
+                </BreadcrumbItem>
+            </Breadcrumb>
         </div>
         <div class="cus-content">
             <slot></slot>
@@ -13,12 +18,21 @@
 </template>
 
 <script>
+import commonIcon from '_c/common-icon'
+import routeUtil from '@/utils/routeUtil'
+
 export default {
     name: 'header-bar',
+    components: {commonIcon},
     props: {
         collapsed: {
             type: Boolean,
             default: false
+        }
+    },
+    computed: {
+        breadcrumbList () {
+            return this.$store.state.app.breadcrumbList
         }
     },
     data () {
@@ -29,6 +43,9 @@ export default {
     methods: {
         handleCollapsedChange () {
             this.$emit('on-coll-change', !this.collapsed)
+        },
+        showTitle (item) {
+            return routeUtil.showTitle(item)
         }
     }
 }

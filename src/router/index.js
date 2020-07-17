@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import routes from './routes'
 import { getToken } from '../utils/auth'
+import routeUtil from '@/utils/routeUtil'
 
 const router = new VueRouter({
 	routes
@@ -16,7 +17,6 @@ VueRouter.prototype.push = function(location) {
 }
 
 router.beforeEach((to, from, next) => {
-	console.log('to: ', to)
 	if (!getToken()) {
 		if (to.name !== 'login') next({ name: 'login' })
 		else next()
@@ -27,6 +27,7 @@ router.beforeEach((to, from, next) => {
 })
 
 router.afterEach((to, from, next) => {
+	routeUtil.setTitle(to)
 })
 
 export default router

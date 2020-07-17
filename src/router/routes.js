@@ -25,6 +25,7 @@ const routes = [
 				component: () => import('@/pages/home/home'),
 				meta: {
 					title: '首页',
+					hideInMenu: true
 				},
 			}
 		]
@@ -60,7 +61,7 @@ const routes = [
 			{
 				path: 'list',
 				name: 'goods-list',
-				component: () => () => import('@/pages/goods/goodsList'),
+				component: () => import('@/pages/goods/goodsList'),
 				meta: {
 					title: '商品列表'
 				}
@@ -68,7 +69,7 @@ const routes = [
 			{
 				path: 'comment',
 				name: 'comment',
-				component: () => () => import('@/pages/home/home'),
+				component: () => import('@/pages/goods/comment'),
 				meta: {
 					title: '商品评论',
 					icon: '_evaluate'
@@ -88,7 +89,7 @@ const routes = [
 			{
 				path: 'wx',
 				name: 'small-routine',
-				component: () => () => import('@/pages/config/smallRoutine'),
+				component: () => import('@/pages/config/smallRoutine'),
 				meta: {
 					title: '小程序配置',
 					icon: '_repair'
