@@ -1,7 +1,7 @@
 <template>
   <div class="side-menu-comp">
     <slot></slot>
-    <Menu v-show="!collapsed" :theme="theme" width="auto" :active-name="activeName" :open-names="openNames" :accordion="accordion" @on-select="menuSelect">
+    <Menu ref="menu" v-show="!collapsed" :theme="theme" width="auto" :active-name="activeName" :open-names="openNames" :accordion="accordion" @on-select="menuSelect">
       <template v-for="item in menuList">
         <template v-if="item.children && item.children.length === 1">
           <sub-menu v-if="showChildren(item)" :key="`menu-${item.name}`" :parent-item="item" :icon-size="iconSize"></sub-menu>
@@ -61,13 +61,29 @@ export default {
       openNames: []
     }
   },
+  watch: {
+    openNames (cur) {
+      this.$nextTick(() => {
+        this.$refs.menu.updateOpened()
+      })
+    }
+  },
   mounted () {
     this.openNames = getUnion(this.openNames, this.activeName)
   },
   methods: {
     menuSelect(name) {
-        console.log('name: ', name)
         this.$emit('on-select', name)
+    },
+    updateOpenNames (name) {
+      if (name === this.$config.homeName) {
+        this.openNames = []
+      } else {
+        this.openNames = this.getOpenNamesByActiveName(name)
+      }
+    },
+    getOpenNamesByActiveName (name) {
+      return this.$route.matched.map(item => item.name).filter(item => item !== name)
     }
   }
 };

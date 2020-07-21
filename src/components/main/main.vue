@@ -1,7 +1,7 @@
 <template>
   <div class="main-page">
     <aside :class="'sider-layout' + (collapsed ? ' collapsed' : '')">
-      <side-menu :collapsed="collapsed" :menu-list="menuList" :icon-size="20" @on-select="turnToPage" :active-name="$route.name"></side-menu>
+      <side-menu ref="sideMenu" :collapsed="collapsed" :menu-list="menuList" :icon-size="20" @on-select="turnToPage" :active-name="$route.name"></side-menu>
     </aside>
     <div class="content-layout">
       <header class="header-con">
@@ -62,22 +62,24 @@ export default {
         route: {name, meta, query, params},
         type: 'push'
       })
+      this.$refs.sideMenu.updateOpenNames(name)
     }
   },
   mounted() {
     this.setTagNavList()
     this.setHomeRoute(routers)
+    let {name, meta, query, params} = this.$route
+    this.addTag({
+      route: {name, meta, query, params},
+      type: 'push'
+    })
     this.setBreadcrumb(this.$route)
     if (!this.tagNavList.find(item => routeUtil.routeEqual(item, this.$route))) {
       this.$router.push({
         name: this.$config.homeName
       })
     }
-    let {name, meta, query, params} = this.$route
-    this.addTag({
-      route: {name, meta, query, params},
-      type: 'push'
-    })
+    this.$refs.sideMenu.updateOpenNames(name)
   },
   methods: {
     ...mapMutations([
@@ -114,8 +116,7 @@ export default {
      * 关闭标签
      */
     handleTagClose (result, type, route) {
-      console.log(result, type, route)
-      if (type !== 'others') {
+      if (type !== 'other') {
         if (type === 'all') {
           this.turnToPage(this.$config.homeName)
         } else {

@@ -23,7 +23,7 @@ const store = {
     },
     mutations: {
         setBreadcrumb (state, status) {
-            state.breadcrumbList = routeUtil.getBreadcrumbList(status)
+            state.breadcrumbList = routeUtil.getBreadcrumbList(status, state.homeRoute)
         },
         setHomeRoute (state, routes) {
             state.homeRoute = routeUtil.getHomeRoute(routes, config.homeName)

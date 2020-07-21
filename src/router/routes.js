@@ -4,7 +4,7 @@ const routes = [
 	{
 		path: '/login',
 		name: 'login',
-		component: () => import('@/pages/login/login'),
+		component: () => import('@/views/login/login'),
 		meta: {
 			title: 'Login - 登录',
 			hideInMenu: true
@@ -22,10 +22,11 @@ const routes = [
 			{
 				path: '/home',
 				name: 'home',
-				component: () => import('@/pages/home/home'),
+				component: () => import('@/views/home/home'),
 				meta: {
 					title: '首页',
-					hideInMenu: true
+					hideInMenu: true,
+					icon: 'md-home'
 				},
 			}
 		]
@@ -41,7 +42,7 @@ const routes = [
 			{
 				path: 'addr',
 				name: 'addr',
-				component: () => import('@/pages/user/address'),
+				component: () => import('@/views/user/address'),
 				meta: {
 					title: '地址管理',
 					icon: '_location'
@@ -61,7 +62,7 @@ const routes = [
 			{
 				path: 'list',
 				name: 'goods-list',
-				component: () => import('@/pages/goods/goodsList'),
+				component: () => import('@/views/goods/goodsList'),
 				meta: {
 					title: '商品列表'
 				}
@@ -69,7 +70,7 @@ const routes = [
 			{
 				path: 'comment',
 				name: 'comment',
-				component: () => import('@/pages/goods/comment'),
+				component: () => import('@/views/goods/comment'),
 				meta: {
 					title: '商品评论',
 					icon: '_evaluate'
@@ -89,7 +90,7 @@ const routes = [
 			{
 				path: 'wx',
 				name: 'small-routine',
-				component: () => import('@/pages/config/smallRoutine'),
+				component: () => import('@/views/config/smallRoutine'),
 				meta: {
 					title: '小程序配置',
 					icon: '_repair'

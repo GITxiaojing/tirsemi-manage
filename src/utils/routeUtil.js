@@ -43,8 +43,14 @@ routeUtil.showTitle = (item) => {
  * 处理面包屑
  * @param {*} route 
  */
-routeUtil.getBreadcrumbList = (route) => {
+routeUtil.getBreadcrumbList = (route, homeRoute) => {
     let { matched } = route
+    let homeItem = { ...homeRoute, icon: (homeRoute.meta && homeRoute.meta.icon) || ''}
+    if (matched.some(item => {
+        item.name === homeRoute.Name
+    })) {
+        return [homeItem]
+    }
     let result = matched.filter(item => {
         return item.meta === undefined || !item.hideInBread
     }).map(item => {
@@ -58,7 +64,7 @@ routeUtil.getBreadcrumbList = (route) => {
     result = result.filter(item => {
         return !item.meta.hideInMenu
     })
-    return result
+    return [{...homeItem, to: homeRoute.path}, ...result]
 }
 
 /**
@@ -82,15 +88,17 @@ routeUtil.getTagListFromStorage = () => {
  */
 routeUtil.getHomeRoute = (routers, homeName = 'home') => {
     let homeRoute = {}
-    routers.forEach(item => {
+    for (let i = 0; i < routers.length; i++) {
+        let item = routers[i]
         if (item.children && item.children.length) {
-            routeUtil.getHomeRoute(item.children, homeName)
+            let res = routeUtil.getHomeRoute(item.children, homeName)
+            if (res.name) return res
         } else {
             if (homeName === item.name) {
                 homeRoute = item
             }
         }
-    })
+    }
     return homeRoute
 }
 
