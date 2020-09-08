@@ -4,7 +4,6 @@ const rootPath = path.resolve(__dirname, '../')
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 module.exports = {
-	mode: 'development',
 	entry: '@/main.js',
 	output: {
 		path: path.resolve(rootPath, 'dist'),

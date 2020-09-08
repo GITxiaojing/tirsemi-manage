@@ -2,4 +2,7 @@
 /.vscode
 /.idea
 /dist
+/test
+/test1
+jsconfig.json
 package-lock.json
