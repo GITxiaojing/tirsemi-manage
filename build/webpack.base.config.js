@@ -39,6 +39,14 @@ module.exports = {
 				] // 可以使用extract-text-webpack-plugin将css模块抽离到分离的css文件
 			},
 			{
+				test: /\.scss$/,
+				use: [
+					'style-loader',
+					'css-loader',
+					'sass-loader'
+				] // 可以使用extract-text-webpack-plugin将css模块抽离到分离的css文件
+			},
+			{
 				test: /\.(svg|ttf|eot|woff)\??.*$/,
 				use: ['url-loader']
 			}

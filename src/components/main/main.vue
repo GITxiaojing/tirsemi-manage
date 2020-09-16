@@ -131,7 +131,6 @@ export default {
 }
 </script>
 
-<style" lang=less" scoped>
-@import url("./main.less");
-@import url('./main.css')
+<style lang="less">
+@import "./main.less";
 </style>

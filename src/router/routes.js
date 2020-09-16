@@ -62,9 +62,17 @@ const routes = [
 			{
 				path: 'list',
 				name: 'goods-list',
-				component: () => import('@/views/goods/goodsList'),
+				component: () => import('@/views/goods/list'),
 				meta: {
 					title: '商品列表'
+				}
+			},
+			{
+				path: 'create',
+				name: 'goods-create',
+				component: () => import('@/views/goods/create'),
+				meta: {
+					title: '商品上架'
 				}
 			},
 			{
