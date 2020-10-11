@@ -1,7 +1,7 @@
 const vueLoaderPlugin = require('vue-loader/lib/plugin')
 const path = require('path')
 const rootPath = path.resolve(__dirname, '../')
-// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const utils = require('./utils')
 
 module.exports = {
 	entry: '@/main.js',
@@ -32,11 +32,12 @@ module.exports = {
 			},
 			{
 				test: /\.less$/,
-				use: [
-					'style-loader',
-					'css-loader',
-					'less-loader'
-				] // 可以使用extract-text-webpack-plugin将css模块抽离到分离的css文件
+				// use: [
+				// 	'style-loader',
+				// 	'css-loader',
+				// 	'less-loader'
+				// ] // 可以使用extract-text-webpack-plugin将css模块抽离到分离的css文件
+				use: utils.cssLoaders().less
 			},
 			{
 				test: /\.scss$/,
@@ -54,11 +55,6 @@ module.exports = {
 	},
 	plugins: [
 		new vueLoaderPlugin()
-		// new BundleAnalyzerPlugin({
-		// 	analyzerMode: 'server',
-		// 	generateStatsFile: true,
-		// 	statsOptions: { source: false }
-		// })
 	],
 	resolve: {
 		alias: {

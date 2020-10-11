@@ -25,10 +25,10 @@ module.exports = webpackMerge(webpackBaseConfig, {
 			template: path.resolve(rootPath, 'public/index.html')
 		}),
 		new webpack.HotModuleReplacementPlugin(),
-		new BundleAnalyzerPlugin({
-			analyzerMode: 'server',
-			generateStatsFile: true,
-			statsOptions: { source: false }
-		})
+		// new BundleAnalyzerPlugin({ // 查看打包体积
+			// analyzerMode: 'server',
+			// generateStatsFile: true,
+			// statsOptions: { source: false }
+		// })
 	]
 })

@@ -99,8 +99,8 @@
                  v-for="item in specificType" :key="item.value"
                  @click="switchSpecificType(item.value)">{{item.name}}</span>
             </p>
-            <div>
-                <Button type="primary">添加</Button>
+            <div class="margin-top-20">
+                <Button type="primary" v-if="curSpecificType === 1" class="add-btn">添加</Button>
                 <Table :data="tableData" :columns="tableColumns">
                     <template slot="img">
 
@@ -119,7 +119,7 @@
         </Card>
         <div class="btn-groups">
             <Button>取消</Button>
-            <Button type="primary">上传</Button>
+            <Button type="primary">上架</Button>
         </div>
     </div>
 </template>
@@ -269,6 +269,13 @@ export default {
                 }
             }
         }
+        .add-btn {
+            margin-bottom: 10px;
+        }
+    }
+    .btn-groups {
+        text-align: right;
+        margin-top: 20px;
     }
 }
 </style>
