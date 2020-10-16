@@ -7,17 +7,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const config = require('../src/config')
 
-
 module.exports = webpackMerge(webpackBaseConfig, {
+	mode: 'development',
 	devtool: 'inline-source-map',
-	devServer: {
-		contentBase: path.resolve(rootPath, 'dist'),
-		host: config.dev.host,
-		port: '',
-		index: 'index.html',
-        hot: true,
-        inline: true
-	},
+	devServer: config.dev,
 	plugins: [
 		new HtmlWebpackPlugin({
 			title: 'tirsemi-manage',

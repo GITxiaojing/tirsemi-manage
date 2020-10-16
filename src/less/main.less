@@ -1,4 +1,35 @@
 @import "@/less/utils.less"; // 使用./utils.less或者../less/utils.less会报错找不到这个文件
+@import "@/less/var.less";
 .margin-top-20 {
     .margin-x(top, 20px);
+}
+
+.margin-top-10 {
+    .margin-x(top, 10px);
+}
+
+.flex-box {
+    display: flex;
+    align-items: center;
+}
+
+.primary-btn {
+    user-select: none;
+    background: @primary-color;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 82px;
+    height: 32px;
+    border-radius: 6px;
+    border-color: @primary-color;
+    cursor: pointer;
+    &:hover {
+        background-color: @primary-color-h;
+        border-color: @primary-color-h;
+    }
+    span {
+        margin-left: 6px;
+    }
 }

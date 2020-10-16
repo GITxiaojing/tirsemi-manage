@@ -26,7 +26,9 @@ exports.cssLoaders = function (options) {
                 options: {
                     resources: [
                         path.resolve(__dirname, '../src/less/utils.less'),
-                        path.resolve(__dirname, '../src/less/main.less')
+                        path.resolve(__dirname, '../src/less/main.less'),
+                        path.resolve(__dirname, '../src/less/iview.less'),
+                        path.resolve(__dirname, '../src/less/var.less')
                     ]
                 }
             }

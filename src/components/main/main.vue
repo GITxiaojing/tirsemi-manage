@@ -8,7 +8,7 @@
         <header-bar :collapsed="collapsed" @on-coll-change="changeCollapsed">
           <full-screen v-model="isFullscreen"></full-screen>
           <!-- <language></language> -->
-          <user></user>
+          <user @on-logout="onLogout"></user>
         </header-bar>
       </header>
       <div class="main-content">
@@ -126,6 +126,12 @@ export default {
         }
       }
       this.setTagNavList(result)
+    },
+    // 登出系统
+    onLogout () {
+      this.$store.dispatch('logout').then(() => {
+        location.reload()
+      })
     }
   }
 }

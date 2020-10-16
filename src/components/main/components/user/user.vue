@@ -24,9 +24,9 @@ export default {
     methods: {
         handleClick (name) {
             if (name === 'message') {
-                console.log('message')
+                this.$emit('on-message')
             } else {
-                console.log('logout')
+                this.$emit('on-logout')
             }
         }
     }

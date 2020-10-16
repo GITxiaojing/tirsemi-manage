@@ -19,5 +19,6 @@ export const getToken = () => {
  * 移除cookie
  */
 export const removeToken = () => {
+    console.log(233)
     Cookie.remove(config.TOKENKEY)
 }

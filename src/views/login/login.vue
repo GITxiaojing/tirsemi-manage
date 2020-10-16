@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { submitLogin } from "@/api/login";
+import { login } from "@/api/auth";
 import { setToken } from "@/utils/auth";
 export default {
   name: "login",
@@ -59,14 +59,20 @@ export default {
      * 请求登录
      */
     reqLogin() {
-      let token = '2222222222'
-      setToken(token);
-      this.$router.push({
-        name: this.$config.homeName
-      });
-      submitLogin(this.loginForm)
-        .then(res => {})
-        .catch(err => {});
+      login(this.loginForm)
+        .then(res => {
+          if (res.errno === 0) {
+            let data = res.data || {}
+            setToken(data.token);
+            this.$router.push({
+              name: this.$config.homeName
+            });
+          } else {
+          }
+        })
+        .catch(err => {
+          console.log('err: ', err)
+        });
     }
   }
 };

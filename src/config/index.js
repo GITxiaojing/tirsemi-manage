@@ -17,13 +17,20 @@ function getNetworkIp () {
     }
     return needHost
 }
+const host = getNetworkIp()
 module.exports = {
     homeName: 'home',
     TOKENKEY: 'X-Tirsemi-Admin-Token',
     dev: {
-        host: getNetworkIp()
+        host: host,
+        proxy: {
+            '/': 'http://192.168.1.109:8081'
+        }
     },
     prod: {
-        host: getNetworkIp()
+        host: host,
+        proxy: {
+            '/': 'http://192.168.10.99:8080'
+        }
     }
 }
