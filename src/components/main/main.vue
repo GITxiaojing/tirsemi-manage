@@ -1,8 +1,8 @@
 <template>
   <div class="main-page">
-    <aside :class="'sider-layout' + (collapsed ? ' collapsed' : '')">
+    <div :class="'sider-layout' + (collapsed ? ' collapsed' : '')">
       <side-menu ref="sideMenu" :collapsed="collapsed" :menu-list="menuList" :icon-size="20" @on-select="turnToPage" :active-name="$route.name"></side-menu>
-    </aside>
+    </div >
     <div class="content-layout">
       <header class="header-con">
         <header-bar :collapsed="collapsed" @on-coll-change="changeCollapsed">

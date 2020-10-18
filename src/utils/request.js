@@ -12,7 +12,6 @@ class HttpRequest {
 
         })
         instance.interceptors.response.use((res) => {
-            console.log('res: ', res)
             if (res.status === 200) {
                 if (res.data.errno === 10011001) {
                     setToken('')
@@ -21,7 +20,6 @@ class HttpRequest {
                         path: '/login'
                     })
                 } else {
-                    console.log(5555555)
                     return res.data
                 }
             }
@@ -41,6 +39,6 @@ class HttpRequest {
     }
 }
 
-const request = new HttpRequest()
+const httpRequest = new HttpRequest()
 
-export default request
+export default httpRequest

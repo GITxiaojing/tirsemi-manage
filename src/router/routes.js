@@ -76,6 +76,15 @@ const routes = [
 				}
 			},
 			{
+				path: 'edit',
+				name: 'goods-edit',
+				component: () => import('@/views/goods/edit'),
+				meta: {
+					title: '商品编辑',
+					hideInMenu: true
+				}
+			},
+			{
 				path: 'comment',
 				name: 'comment',
 				component: () => import('@/views/goods/comment'),

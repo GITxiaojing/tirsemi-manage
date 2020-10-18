@@ -8,7 +8,9 @@ const config = require('../src/config')
 
 module.exports = webpackMerge(webpackBaseConfig, {
 	mode: 'production',
-	devServer: config.prod,
+	devServer: {
+		...config.prod
+	},
 	plugins: [
 		new HtmlWebpackPlugin({
 			title: 'tirsemi-manage',
