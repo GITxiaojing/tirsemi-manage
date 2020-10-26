@@ -1,7 +1,5 @@
 import routeUtil from '@/utils/routeUtil'
-import commonIcon from '_c/common-icon'
 export default {
-    components: {commonIcon},
     props: {
         parentItem: {
             type: Object,

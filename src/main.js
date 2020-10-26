@@ -5,6 +5,9 @@ import App from './App'
 import ViewUI from 'view-design'
 import 'view-design/dist/styles/iview.css'
 import config from './config'
+import CommonIcon from '_c/common-icon'
+
+Vue.component('CommonIcon', CommonIcon)
 
 Vue.use(ViewUI)
 

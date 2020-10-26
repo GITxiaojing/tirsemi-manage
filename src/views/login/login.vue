@@ -63,7 +63,7 @@ export default {
         .then(res => {
           if (res.errno === 0) {
             let data = res.data || {}
-            setToken(data.token);
+            this.$store.commit('SET_TOKEN', data.token)
             this.$router.push({
               name: this.$config.homeName
             });

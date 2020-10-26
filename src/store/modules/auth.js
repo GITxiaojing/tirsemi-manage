@@ -3,14 +3,20 @@ import { setToken, removeToken } from '@/utils/auth'
 
 export default {
     state: {
-
+        token: ''
+    },
+    mutations: {
+        SET_TOKEN (state, token) {
+            setToken(token)
+            state.token = token
+        }
     },
     actions: {
-        logout (state) {
+        logout ({commit}) {
             return new Promise((resolve, reject) => {
                 logout({}).then(res => {
                     if (res.errno === 0) {
-                        setToken('')
+                        commit('SET_TOKEN', '')
                         removeToken()
                         resolve()
                     }

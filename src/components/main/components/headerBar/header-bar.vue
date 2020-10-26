@@ -18,12 +18,10 @@
 </template>
 
 <script>
-import commonIcon from '_c/common-icon'
 import routeUtil from '@/utils/routeUtil'
 
 export default {
     name: 'header-bar',
-    components: {commonIcon},
     props: {
         collapsed: {
             type: Boolean,

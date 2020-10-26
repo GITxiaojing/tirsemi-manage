@@ -15,7 +15,7 @@
                         <span>商品编号</span>
                         <span>{{row.goodsSn}}</span>
                     </Row>
-                    <!-- <Form :model="row" :label-width="100">
+                    <Form :model="row" :label-width="100">
                         <FormItem label="商品编号">
                             <span>{{row.goodsSn}}</span>
                         </FormItem>
@@ -37,7 +37,7 @@
                         <FormItem label="品牌商ID">
                             <span>{{row.brandId}}</span>
                         </FormItem>
-                    </Form> -->
+                    </Form>
                 </template>
                 <template slot="img" slot-scope="{row}">
                     <img width="40" :src="row.picUrl">
