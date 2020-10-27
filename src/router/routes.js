@@ -45,7 +45,8 @@ const routes = [
 				component: () => import('@/views/user/address'),
 				meta: {
 					title: '地址管理',
-					icon: '_location'
+					icon: '_location',
+					keepAlive: true
 				}
 			}
 		]
@@ -64,7 +65,8 @@ const routes = [
 				name: 'goods-list',
 				component: () => import('@/views/goods/list'),
 				meta: {
-					title: '商品列表'
+					title: '商品列表',
+					keepAlive: true
 				}
 			},
 			{
@@ -72,7 +74,8 @@ const routes = [
 				name: 'goods-create',
 				component: () => import('@/views/goods/create'),
 				meta: {
-					title: '商品上架'
+					title: '商品上架',
+					keepAlive: true
 				}
 			},
 			{
@@ -81,7 +84,8 @@ const routes = [
 				component: () => import('@/views/goods/edit'),
 				meta: {
 					title: '商品编辑',
-					hideInMenu: true
+					hideInMenu: true,
+					keepAlive: true
 				}
 			},
 			{
@@ -90,7 +94,8 @@ const routes = [
 				component: () => import('@/views/goods/comment'),
 				meta: {
 					title: '商品评论',
-					icon: '_evaluate'
+					icon: '_evaluate',
+					keepAlive: true
 				}
 			}
 		]
@@ -110,7 +115,8 @@ const routes = [
 				component: () => import('@/views/config/smallRoutine'),
 				meta: {
 					title: '小程序配置',
-					icon: '_repair'
+					icon: '_repair',
+					keepAlive: true
 				}
 			}
 		]

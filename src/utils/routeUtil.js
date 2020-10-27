@@ -109,11 +109,11 @@ routeUtil.getHomeRoute = (routers, homeName = 'home') => {
  */
 routeUtil.calcTagNavList = (list, route) => {
     let result = list.slice(0)
-    let { name, path, meta } = route
+    let { name, path, meta, query, params } = route
     let res = list.filter(item => {
         return name === item.name
     })
-    if (!res.length) result.push({name, path, meta})
+    if (!res.length) result.push({name, path, meta, query, params})
     return result
 }
 

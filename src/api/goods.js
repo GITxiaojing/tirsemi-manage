@@ -45,7 +45,7 @@ export const getGoodsInfo = params => {
     })
 }
 
-// 获取f分类和品牌商
+// 获取分类和品牌商
 export const getCateAndBrand = params => {
     return axios.request({
         url: '/admin/goods/catAndBrand',

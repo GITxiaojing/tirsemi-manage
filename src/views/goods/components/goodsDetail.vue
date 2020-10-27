@@ -1,5 +1,5 @@
 <template>
-  <div class="goods-create-page" ref="goodsPage">
+  <div class="goods-detail-page" ref="goodsPage">
     <Card class="card-box">
       <h3 class="header-box">商品介绍</h3>
       <Form
@@ -168,7 +168,7 @@
     </Card>
     <Card class="card-box">
       <h3 class="header-box">商品规格</h3>
-      <div class="switch-wrapper">
+      <div class="switch-wrapper" v-if="type === 'create'">
         <p class="switch-tabs">
           <span
             :class="{ active: item.value === curSpecificType }"
@@ -217,8 +217,8 @@
               >{{ item }}</Tag
             >
           </template>
-          <template slot="img" slot-scope="{ row }">
-            <img :src="row.picUrl" />
+          <template slot="picUrl" slot-scope="{ row }">
+            <img :src="row.picUrl" width="40" />
           </template>
           <template slot="operate" slot-scope="{ row }">
             <Button type="primary" @click="openModal(2, row)">设置</Button>
@@ -386,6 +386,9 @@ export default {
       type: String,
       default: "create",
     },
+    info: {
+      type: Object
+    }
   },
   data() {
     return {
@@ -514,6 +517,7 @@ export default {
           align: "center",
           key: "picUrl",
           title: "货品图片",
+          slot: 'picUrl'
         },
         {
           align: "center",
@@ -606,6 +610,22 @@ export default {
     },
   },
   watch: {
+    type (cur) {
+      if (cur !== 'create') {
+        thius.curSpecificType = 1
+      }
+    },
+    info (cur) {
+      this.formData = {
+        ...this.formData,
+        ...cur.goods
+      }
+      this.formData.categoryId = cur.categoryIds
+      this.formData.keywords = this.formData.keywords ? this.formData.keywords.split(',') : []
+      this.productTbData = [...cur.products]
+      this.attrTbData = [...cur.attributes]
+      this.speTbData = [...cur.specifications]
+    },
     curSpecificType(cur) {
       if (cur === 0) {
         this.speTbData = [{...this.defaultGoodInfo}];
@@ -614,10 +634,10 @@ export default {
         this.speTbData = [];
         this.productTbData = [];
       }
-    },
+    }
   },
   created() {
-    if (this.curSpecificType === 0) {
+    if (this.type === 'create' && this.curSpecificType === 0) {
       this.speTbData = [{...this.defaultGoodInfo}];
         this.productTbData = [{...this.defaultGoodInfo, specifications: ['规格']}];
     }
@@ -901,12 +921,7 @@ export default {
 </script>
 
 <style lang="less">
-.goods-create-page {
-  width: 100%;
-  height: 100%;
-  padding: 10px;
-  overflow: hidden;
-  overflow-y: auto;
+.goods-detail-page {
   .header-box {
     width: 100%;
     padding: 20px 0;

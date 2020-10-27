@@ -16,7 +16,10 @@
           <tag-nav :collapsed="collapsed" :list="tagNavList" :value="$route" @on-click="handleClickTag" @on-close="handleTagClose"></tag-nav>
         </nav>
         <div class="content-wrapper">
-          <router-view></router-view>
+          <keep-alive v-if="$route.meta.keepAlive">
+            <router-view></router-view>
+          </keep-alive>
+          <router-view v-else></router-view>
         </div>
       </div>
     </div>
@@ -55,23 +58,23 @@ export default {
   },
   watch: {
     '$route'(cur) {
-      this.setBreadcrumb(cur)
-      this.setTagNavList(routeUtil.calcTagNavList(this.tagNavList, cur))
+      console.log(11111111, cur)
       let {name, meta, query, params} = cur
       this.addTag({
         route: {name, meta, query, params},
         type: 'push'
       })
+      this.setBreadcrumb(cur)
+      this.setTagNavList(routeUtil.calcTagNavList(this.tagNavList, cur))
       this.$refs.sideMenu.updateOpenNames(name)
     }
   },
   mounted() {
-    this.setTagNavList()
     this.setHomeRoute(routers)
+    this.setTagNavList()
     let {name, meta, query, params} = this.$route
     this.addTag({
-      route: {name, meta, query, params},
-      type: 'push'
+      route: {name, meta, query, params}
     })
     this.setBreadcrumb(this.$route)
     if (!this.tagNavList.find(item => routeUtil.routeEqual(item, this.$route))) {
@@ -107,8 +110,11 @@ export default {
      * 点击标签
      */
     handleClickTag (item) {
+      let { name, query, params} = item
       this.$router.push({
-        name: item.name
+        name,
+        query,
+        params
       })
     },
 
