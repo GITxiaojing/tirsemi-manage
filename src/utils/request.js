@@ -5,7 +5,6 @@ import router from '@/router'
 
 const options = {
   headers: {
-    baseUrl: 'http://192.168.1.102:8080',
     [TOKENKEY]: getToken() || '',
   },
 }
