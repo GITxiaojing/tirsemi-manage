@@ -376,121 +376,121 @@
 </template>
 
 <script>
-import Editor from "@tinymce/tinymce-vue";
-import { getCateAndBrand } from "@/api/goods";
+import Editor from '@tinymce/tinymce-vue'
+import { getCateAndBrand } from '@/api/goods'
+
 export default {
-  name: "goods-create",
+  name: 'GoodsCreate',
   components: { editor: Editor },
   props: {
     type: {
       type: String,
-      default: "create",
+      default: 'create',
     },
     info: {
-      type: Object
-    }
+      type: Object,
+    },
   },
   data() {
     return {
       brandList: [], // 品牌商列表
       categoryList: [], // 分类列表
       formData: {
-        goodsSn: "",
-        name: "",
+        goodsSn: '',
+        name: '',
         counterPrice: 0.0,
         isNew: 1,
         isHot: 0,
         saleStatus: 1,
-        picUrl: "",
+        picUrl: '',
         gallery: [],
-        unit: "",
+        unit: '',
         keywords: [],
         categoryId: [],
-        brandId: "",
-        brief: "",
-        detail: "",
+        brandId: '',
+        brief: '',
+        detail: '',
       }, // 商品介绍表单
       goodsImgs: [], // 商品图片,
-      hoverImg: "", // hover的图片
-      keyordList: [{ name: "标签" }], // 关键字列表
-      keyword: "", // 关键字
+      hoverImg: '', // hover的图片
+      keyordList: [{ name: '标签' }], // 关键字列表
+      keyword: '', // 关键字
       showAddInput: false, // 是否显示增加关键字的input框
       tinymceInit: {
-        language: "zh_CN",
+        language: 'zh_CN',
         height: 500,
         plugins: [
-          "print preview searchreplace autolink directionality visualblocks visualchars fullscreen image link media template code codesample table charmap hr pagebreak nonbreaking anchor insertdatetime advlist lists wordcount imagetools textpattern help emoticons autosave bdmap indent2em autoresize lineheight formatpainter axupimgs",
+          'print preview searchreplace autolink directionality visualblocks visualchars fullscreen image link media template code codesample table charmap hr pagebreak nonbreaking anchor insertdatetime advlist lists wordcount imagetools textpattern help emoticons autosave bdmap indent2em autoresize lineheight formatpainter axupimgs',
         ],
         toolbar: [
-          "undo redo restoredraft | cut copy paste pastetext | forecolor backcolor bold italic underline strikethrough link anchor | alignleft aligncenter alignright alignjustify outdent indent | bullist numlist",
-          "styleselect formatselect fontselect fontsizeselect | blockquote subscript superscript removeformat | table image media charmap emoticons hr pagebreak insertdatetime print preview | fullscreen | bdmap indent2em lineheight formatpainter axupimgs",
+          'undo redo restoredraft | cut copy paste pastetext | forecolor backcolor bold italic underline strikethrough link anchor | alignleft aligncenter alignright alignjustify outdent indent | bullist numlist',
+          'styleselect formatselect fontselect fontsizeselect | blockquote subscript superscript removeformat | table image media charmap emoticons hr pagebreak insertdatetime print preview | fullscreen | bdmap indent2em lineheight formatpainter axupimgs',
         ],
-        fontsize_formats: "12px 14px 16px 18px 24px 36px 48px 56px 72px",
+        fontsize_formats: '12px 14px 16px 18px 24px 36px 48px 56px 72px',
       }, // 初始化tinymce插件的参数
       validateRules: {
         name: [
-          { required: true, message: "商品名称不能为空", trigger: "blur" },
+          { required: true, message: '商品名称不能为空', trigger: 'blur' },
         ],
         goodsSn: [
-          { required: true, message: "商品编号不能为空", trigger: "blur" },
+          { required: true, message: '商品编号不能为空', trigger: 'blur' },
         ],
         categoryId: [
           // { required: true, message: "所属分类不能为空", trigger: 'blur'}
-        ]
+        ],
       }, // 校验表单
       defaultGoodInfo: {
-        specification: "规格",
-        value: "标准",
+        specification: '规格',
+        value: '标准',
         price: 0,
         number: 0,
-        picUrl: "",
+        picUrl: '',
       }, // 默认的商品规格
       specifications: {
-        goodsId: "",
-        id: "",
-        picUrl: "",
-        specification: "",
-        value: "",
-        id: "",
+        goodsId: '',
+        id: '',
+        picUrl: '',
+        specification: '',
+        value: '',
       }, // 添加商品规格表单
       specRules: {
         specification: [
-          { required: true, message: "规格名不能为空", trigger: "blur" },
+          { required: true, message: '规格名不能为空', trigger: 'blur' },
         ],
-        value: [{ required: true, message: "规格值不能为空", trigger: "blur" }],
-      }, //添加商品规格表单校验
+        value: [{ required: true, message: '规格值不能为空', trigger: 'blur' }],
+      }, // 添加商品规格表单校验
       speTbData: [], // 商品规格表格数据
       speTbCol: [
         {
-          title: "规格名",
-          key: "specification",
-          align: "center",
+          title: '规格名',
+          key: 'specification',
+          align: 'center',
         },
         {
-          title: "规格值",
-          key: "value",
-          align: "center",
-          slot: "value",
+          title: '规格值',
+          key: 'value',
+          align: 'center',
+          slot: 'value',
         },
         {
-          title: "规格图片",
-          key: "picUrl",
-          align: "center",
-          slot: "img",
+          title: '规格图片',
+          key: 'picUrl',
+          align: 'center',
+          slot: 'img',
         },
         {
-          title: "操作",
-          align: "center",
-          slot: "operate",
+          title: '操作',
+          align: 'center',
+          slot: 'operate',
         },
       ], // 商品规格表格表头
       specificType: [
         {
-          name: "默认标准规格",
+          name: '默认标准规格',
           value: 0,
         },
         {
-          name: "多规格支持",
+          name: '多规格支持',
           value: 1,
         },
       ], // 商品规格模式切换
@@ -498,40 +498,40 @@ export default {
       productTbData: [], // 商品库存表格数据
       productTbCol: [
         {
-          align: "center",
-          key: "specifications",
-          title: "货品规格",
-          slot: "specifications",
+          align: 'center',
+          key: 'specifications',
+          title: '货品规格',
+          slot: 'specifications',
         },
         {
-          align: "center",
-          key: "price",
-          title: "货品售价",
+          align: 'center',
+          key: 'price',
+          title: '货品售价',
         },
         {
-          align: "center",
-          key: "number",
-          title: "货品数量",
+          align: 'center',
+          key: 'number',
+          title: '货品数量',
         },
         {
-          align: "center",
-          key: "picUrl",
-          title: "货品图片",
-          slot: 'picUrl'
+          align: 'center',
+          key: 'picUrl',
+          title: '货品图片',
+          slot: 'picUrl',
         },
         {
-          align: "center",
-          title: "操作",
-          slot: "operate",
+          align: 'center',
+          title: '操作',
+          slot: 'operate',
         },
       ], // 商品库存表格的表头
       products: {
-        goodsId: "",
-        id: "",
+        goodsId: '',
+        id: '',
         price: 0,
         specifications: [],
         number: 0,
-        picUrl: "",
+        picUrl: '',
       }, // 商品库存添加货品表单
       productRules: {
         specifications: [
@@ -539,86 +539,86 @@ export default {
             required: true,
             validator: (rule, value, callback) => {
               if (!value || value.length === 0) {
-                callback(new Error("货品规格列不能为空"));
+                callback(new Error('货品规格列不能为空'))
               } else {
-                callback();
+                callback()
               }
             },
-            trigger: "change",
+            trigger: 'change',
           },
         ],
         price: [
           {
-            type: "number",
+            type: 'number',
             required: true,
-            message: "货品售价不能为空",
-            trigger: "blur",
+            message: '货品售价不能为空',
+            trigger: 'blur',
           },
         ],
         number: [
           {
-            type: "number",
+            type: 'number',
             required: true,
-            message: "货品数量不能为空",
-            trigger: "blur",
+            message: '货品数量不能为空',
+            trigger: 'blur',
           },
         ],
       }, // 商品库存添加货品表单校验
       attrTbData: [], // 商品参数表格数据
       attrTbCol: [
         {
-          align: "center",
-          key: "attribute",
-          title: "商品参数名称",
+          align: 'center',
+          key: 'attribute',
+          title: '商品参数名称',
         },
         {
-          align: "center",
-          key: "value",
-          title: "商品参数值",
+          align: 'center',
+          key: 'value',
+          title: '商品参数值',
         },
         {
-          align: "center",
-          title: "操作",
-          slot: "operate",
+          align: 'center',
+          title: '操作',
+          slot: 'operate',
         },
       ], // 商品参数表格表头
       attributes: {
-        attribute: "",
-        value: "",
+        attribute: '',
+        value: '',
       }, // 添加商品参数表单
       attrRules: {
         attribute: [
-          { required: true, message: "商品参数名称不能为空", trigger: "blur" },
+          { required: true, message: '商品参数名称不能为空', trigger: 'blur' },
         ],
         value: [
-          { required: true, message: "商品参数值不能为空", trigger: "blur" },
+          { required: true, message: '商品参数值不能为空', trigger: 'blur' },
         ],
       }, // 添加商品参数表单校验
       showModal: false, // 是否显示对话框
-      modalTitle: "", // 对话框标题
+      modalTitle: '', // 对话框标题
       modalType: 1, // 对话框类型，1是设置规格，2是添加货品，3是添加参数
-    };
+    }
   },
   computed: {
     uploadUrl() {
-      return this.$store.state.uploadFileUrl;
+      return this.$store.state.uploadFileUrl
     },
     headers() {
       return {
         [this.$config.TOKENKEY]: this.$store.state.token,
-      };
+      }
     },
   },
   watch: {
-    type (cur) {
+    type(cur) {
       if (cur !== 'create') {
-        thius.curSpecificType = 1
+        this.curSpecificType = 1
       }
     },
-    info (cur) {
+    info(cur) {
       this.formData = {
         ...this.formData,
-        ...cur.goods
+        ...cur.goods,
       }
       this.formData.categoryId = cur.categoryIds
       this.formData.keywords = this.formData.keywords ? this.formData.keywords.split(',') : []
@@ -628,20 +628,20 @@ export default {
     },
     curSpecificType(cur) {
       if (cur === 0) {
-        this.speTbData = [{...this.defaultGoodInfo}];
-        this.productTbData = [{...this.defaultGoodInfo, specifications: ['规格']}];
+        this.speTbData = [{ ...this.defaultGoodInfo }]
+        this.productTbData = [{ ...this.defaultGoodInfo, specifications: ['规格'] }]
       } else {
-        this.speTbData = [];
-        this.productTbData = [];
+        this.speTbData = []
+        this.productTbData = []
       }
-    }
+    },
   },
   created() {
     if (this.type === 'create' && this.curSpecificType === 0) {
-      this.speTbData = [{...this.defaultGoodInfo}];
-        this.productTbData = [{...this.defaultGoodInfo, specifications: ['规格']}];
+      this.speTbData = [{ ...this.defaultGoodInfo }]
+      this.productTbData = [{ ...this.defaultGoodInfo, specifications: ['规格'] }]
     }
-    this.getCateAndBrand();
+    this.getCateAndBrand()
   },
   methods: {
     // 获取分类和品牌商
@@ -649,43 +649,46 @@ export default {
       getCateAndBrand({})
         .then((res) => {
           if (res.errno === 0) {
-            let data = res.data || {};
-            this.brandList = data.brandList || [];
-            this.categoryList = data.categoryList || [];
+            const data = res.data || {}
+            this.brandList = data.brandList || []
+            this.categoryList = data.categoryList || []
           } else {
+            this.brandList = []
+            this.categoryList = []
           }
         })
         .catch((err) => {
-          console.log("err: ", err);
-        });
+          console.log('err: ', err)
+        })
     },
     /**
      * 删除图片的操作，type：1是商品图片，type：2是画廊图片，3是规格图片, index是type为2时的，指的是数组下标
      */
     handleDelImg(type, index) {
       if (type === 1) {
-        this.formData.picUrl = "";
+        this.formData.picUrl = ''
       } else if (type === 2) {
-        this.formData.gallery.splice(index, 1);
+        this.formData.gallery.splice(index, 1)
       } else {
+        // this.formData.gallery.splice(index, 1)
       }
     },
 
     // 修改规格类型
     switchSpecificType(val) {
-      this.curSpecificType = val;
+      this.curSpecificType = val
     },
 
     // 上传成功的统一处理
     commonUpload(res, file, success, error) {
       if (res.errno === 0) {
-        success(res);
+        success(res)
       } else if (res.errno === 10011001) {
         this.$router.push({
-          name: "login",
-        });
+          name: 'login',
+        })
       } else {
-        error();
+        error()
       }
     },
 
@@ -695,26 +698,28 @@ export default {
         res,
         file,
         () => {
-          let data = res.data || {};
-          this.formData.picUrl = data.url;
+          const data = res.data || {}
+          this.formData.picUrl = data.url
         },
         () => {
-          this.$Message.error("商品图片上传失败");
-        }
-      );
+          this.$Message.error('商品图片上传失败')
+        },
+      )
     },
 
     // 上传商品图片失败
     uploadGPErr(res, file) {
-      this.$Message.error("商品图片上传失败");
+      console.log(res, file)
+      this.$Message.error('商品图片上传失败')
     },
 
     // 上传宣传图片前的操作
     beforeGalleryUpload() {
       if (this.formData.gallery && this.formData.gallery.length >= 5) {
-        this.$Message.warning("上传文件个数超出限制!最多上传5张图片!");
-        return false;
+        this.$Message.warning('上传文件个数超出限制!最多上传5张图片!')
+        return false
       }
+      return true
     },
 
     // 上传宣传图片成功
@@ -723,18 +728,19 @@ export default {
         res,
         file,
         () => {
-          let data = res.data || {};
-          this.formData.gallery.push(data.url);
+          const data = res.data || {}
+          this.formData.gallery.push(data.url)
         },
         () => {
-          this.$Message.error("宣传图片上传失败");
-        }
-      );
+          this.$Message.error('宣传图片上传失败')
+        },
+      )
     },
 
     // 上传宣传图片失败
     uploadGalleryErr(res, file) {
-      this.$Message.error("宣传图片上传失败");
+      console.log(res, file)
+      this.$Message.error('宣传图片上传失败')
     },
 
     // 上传商品规格的商品图片成功
@@ -743,18 +749,19 @@ export default {
         res,
         file,
         () => {
-          let data = res.data || {};
-          this.specifications.picUrl = data.url;
+          const data = res.data || {}
+          this.specifications.picUrl = data.url
         },
         () => {
-          this.$Message.error("规格图片上传失败");
-        }
-      );
+          this.$Message.error('规格图片上传失败')
+        },
+      )
     },
 
     // 上传商品规格的商品图片失败
     uploadSpeErr(res, file) {
-      this.$Message.error("规格图片上传失败");
+      console.log(res, file)
+      this.$Message.error('规格图片上传失败')
     },
 
     // 商品库存的商品图片上传成功
@@ -763,161 +770,163 @@ export default {
         res,
         file,
         () => {
-          let data = res.data || {};
-          this.products.picUrl = data.url;
+          const data = res.data || {}
+          this.products.picUrl = data.url
         },
         () => {
-          this.$Message.error("货品图片上传失败");
-        }
-      );
+          this.$Message.error('货品图片上传失败')
+        },
+      )
     },
 
     // 商品库存的商品图片上传失败
     uploadProdErr(res, file) {
-      this.$Message.error("货品图片上传失败");
+      console.log(res, file)
+      this.$Message.error('货品图片上传失败')
     },
 
     onHover(item) {
-      this.hoverImg = item;
+      this.hoverImg = item
     },
 
     onLeave() {
-      this.hoverImg = "";
+      this.hoverImg = ''
     },
 
     // 显示添加关键字的input
     showInput() {
-      this.showAddInput = true;
+      this.showAddInput = true
     },
 
     // 删除关键字
     onCloseTag(index) {
-      this.formData.keywords.splice(index, 1);
+      this.formData.keywords.splice(index, 1)
     },
 
     // 添加关键字
     addKeyword() {
-      this.formData.keywords.push(this.keyword);
-      this.showAddInput = false;
-      this.keyword = "";
+      this.formData.keywords.push(this.keyword)
+      this.showAddInput = false
+      this.keyword = ''
     },
     // 打开对话框 1是设置规格，2是添加货品，3是添加参数
     openModal(type, row) {
-      this.showModal = true;
-      this.modalType = type;
-      console.log(11, type, row);
-      this.initModal(type, row);
+      this.showModal = true
+      this.modalType = type
+      console.log(11, type, row)
+      this.initModal(type, row)
     },
     // 初始化对话框
     initModal(type, row) {
       this.$nextTick(() => {
         switch (type) {
-          case 1:
-            this.modalTitle = "设置规格";
-            this.$refs.specifications.resetFields();
-            break;
-          case 2:
-            this.modalTitle = "添加货品";
-            this.$refs.productForm.resetFields();
-            this.products = { ...(row || this.products) };
-            break;
-          case 3:
-            this.modalTitle = "添加商品参数";
-            this.$refs.attributes.resetFields();
-            break;
-          default:
-            this.modalTitle = "";
+        case 1:
+          this.modalTitle = '设置规格'
+          this.$refs.specifications.resetFields()
+          break
+        case 2:
+          this.modalTitle = '添加货品'
+          this.$refs.productForm.resetFields()
+          this.products = { ...(row || this.products) }
+          break
+        case 3:
+          this.modalTitle = '添加商品参数'
+          this.$refs.attributes.resetFields()
+          break
+        default:
+          this.modalTitle = ''
         }
-      });
+      })
     },
     // 删除添加的规格
     delSpecification(scope) {
-      this.speTbData.splice(scope.index, 1);
+      this.speTbData.splice(scope.index, 1)
       if (this.speTbData.length > 0) {
-        let index = this.productTbData[0].specifications.indexOf(
-          scope.row.specification
-        );
-        index > -1 && this.productTbData[0].specifications.splice(index, 1);
+        const index = this.productTbData[0].specifications.indexOf(
+          scope.row.specification,
+        )
+        index > -1 && this.productTbData[0].specifications.splice(index, 1)
       } else {
-        this.productTbData = [];
+        this.productTbData = []
       }
     },
     // 删除商品参数
     delAttr(scope) {
-      this.attrTbData.splice(scope.index, 1);
+      this.attrTbData.splice(scope.index, 1)
     },
     // 点击对话框的确认
     okModal() {
-      let showModal = false;
+      let showModal = false
       switch (this.modalType) {
-        case 1:
-          this.$refs.specifications.validate((valid) => {
-            if (valid) {
-              this.speTbData.push({
-                ...this.specifications,
-              });
-              let specifications = [];
-              this.speTbData.forEach((item) => {
-                specifications.push(item.specification);
-              });
-              if (!this.productTbData.length) {
-                this.productTbData.push({
-                  ...this.products,
-                  specifications,
-                });
-              } else {
-                this.productTbData[0].specifications = specifications;
-              }
+      case 1:
+        this.$refs.specifications.validate((valid) => {
+          if (valid) {
+            this.speTbData.push({
+              ...this.specifications,
+            })
+            const specifications = []
+            this.speTbData.forEach((item) => {
+              specifications.push(item.specification)
+            })
+            if (!this.productTbData.length) {
+              this.productTbData.push({
+                ...this.products,
+                specifications,
+              })
             } else {
-              showModal = true;
+              this.productTbData[0].specifications = specifications
             }
-          });
-          break;
-        case 2:
-          this.$refs.productForm.validate((valid) => {
-            if (valid) {
-              console.log(222222);
-            } else {
-              showModal = true;
-            }
-          });
-          break;
-        case 3:
-          this.$refs.attributes.validate((valid) => {
-            if (valid) {
-              this.attrTbData.push(this.attributes);
-            } else {
-              showModal = true;
-            }
-          });
-          break;
+          } else {
+            showModal = true
+          }
+        })
+        break
+      case 2:
+        this.$refs.productForm.validate((valid) => {
+          if (valid) {
+            console.log(222222)
+          } else {
+            showModal = true
+          }
+        })
+        break
+      case 3:
+        this.$refs.attributes.validate((valid) => {
+          if (valid) {
+            this.attrTbData.push(this.attributes)
+          } else {
+            showModal = true
+          }
+        })
+        break
+      default: showModal = true
       }
-      this.showModal = showModal;
+      this.showModal = showModal
     },
     // 点击对话框的取消
     cancelModal() {
-      this.showModal = false;
+      this.showModal = false
     },
     // 点击上架或更新商品
     onSave() {
       this.$refs.formData.validate((valid) => {
         if (valid) {
-          let formData = {... this.formData}
+          const formData = { ...this.formData }
           formData.keywords = formData.keywords.join(',')
           formData.categoryId = formData.categoryId[formData.categoryId.length - 1]
-          this.$emit("on-save", {
+          this.$emit('on-save', {
             goods: formData,
             attributes: this.attrTbData,
             products: this.productTbData,
             specifications: this.speTbData,
-          });
+          })
         } else {
           this.$refs.goodsPage.scrollTop = 0
         }
-      });
+      })
     },
   },
-};
+}
 </script>
 
 <style lang="less">

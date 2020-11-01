@@ -3,56 +3,73 @@
     <div class="from-box">
       <div class="form-header">欢迎登录</div>
       <div class="form-body">
-        <Form ref="loginForm" :model="loginForm" :rules="formValid" @keyup.enter.native="submitForm">
+        <Form
+          ref="loginForm"
+          :model="loginForm"
+          :rules="formValid"
+          @keyup.enter.native="submitForm"
+        >
           <FormItem prop="username">
             <Input type="text" placeholder="账户" v-model="loginForm.username">
               <Icon size="18" slot="prepend" type="md-person"></Icon>
             </Input>
           </FormItem>
           <FormItem prop="password">
-            <Input type="password" placeholder="密码" v-model="loginForm.password">
+            <Input
+              type="password"
+              placeholder="密码"
+              v-model="loginForm.password"
+            >
               <Icon size="18" slot="prepend" type="md-lock"></Icon>
             </Input>
           </FormItem>
         </Form>
       </div>
       <div class="form-footer">
-        <Button type="primary" :loading="loading" class="login-btn" @click="submitForm">登录</Button>
+        <Button
+          type="primary"
+          :loading="loading"
+          class="login-btn"
+          @click="submitForm"
+          >登录</Button
+        >
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { login } from "@/api/auth";
-import { setToken } from "@/utils/auth";
+import { login } from '@/api/auth'
+
 export default {
-  name: "login",
+  name: 'Login',
   data() {
     return {
       loginForm: {
-        username: "admin",
-        password: "123456"
+        username: 'admin',
+        password: '123456',
       },
       formValid: {
         username: [
-          { required: true, message: "账户不能为空", trigger: "blur" }
+          { required: true, message: '账户不能为空', trigger: 'blur' },
         ],
-        password: [{ required: true, message: "密码不能为空", trigger: "blur" }]
+        password: [
+          { required: true, message: '密码不能为空', trigger: 'blur' },
+        ],
       },
-      loading: false
-    };
+      loading: false,
+    }
   },
   methods: {
     /**
      * 提交表单
      */
     submitForm() {
-      this.$refs.loginForm.validate(valid => {
+      this.$refs.loginForm.validate((valid) => {
         if (valid) {
-          this.reqLogin();
+          this.reqLogin()
         }
-      });
+      })
     },
 
     /**
@@ -60,22 +77,23 @@ export default {
      */
     reqLogin() {
       login(this.loginForm)
-        .then(res => {
+        .then((res) => {
           if (res.errno === 0) {
-            let data = res.data || {}
+            const data = res.data || {}
             this.$store.commit('SET_TOKEN', data.token)
             this.$router.push({
-              name: this.$config.homeName
-            });
+              name: this.$config.homeName,
+            })
           } else {
+            this.$Message.error(res.errmsg)
           }
         })
-        .catch(err => {
+        .catch((err) => {
           console.log('err: ', err)
-        });
-    }
-  }
-};
+        })
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

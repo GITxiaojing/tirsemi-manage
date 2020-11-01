@@ -1,44 +1,36 @@
 import axios from 'axios'
-import config from '@/config'
+import { TOKENKEY } from '@/config'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import router from '@/router'
-import { Message } from 'view-design'
 
-class HttpRequest {
-    setInterceptor (instance, url) {
-        instance.interceptors.request.use((config) => {
-            return config
-        }, (err) => {
-
-        })
-        instance.interceptors.response.use((res) => {
-            if (res.status === 200) {
-                if (res.data.errno === 10011001) {
-                    setToken('')
-                    removeToken()
-                    router.push({
-                        path: '/login'
-                    })
-                } else {
-                    return res.data
-                }
-            }
-        }, (err) => {
-
-        })
-    }
-    request(options) {
-        const instance = axios.create()
-        options = Object.assign({
-            headers: {
-                [config.TOKENKEY]: getToken() || ''
-            },
-        }, options)
-        this.setInterceptor(instance, options.url)
-        return instance(options)
-    }
+const options = {
+  headers: {
+    baseUrl: 'http://192.168.1.102:8080',
+    [TOKENKEY]: getToken() || '',
+  },
 }
 
-const httpRequest = new HttpRequest()
+const instance = axios.create(options)
 
-export default httpRequest
+instance.interceptors.request.use(cof => {
+  return cof
+}, (err) => {
+  console.log('err: ', err)
+})
+instance.interceptors.response.use(res => {
+  if (res.status === 200) {
+    if (res.data.errno === 10011001) {
+      setToken('')
+      removeToken()
+      router.push({
+        path: '/login',  
+      })
+    } else {
+      return res.data
+    }
+  }
+}, (err) => {
+  console.log('err: ', err)
+})
+
+export default instance

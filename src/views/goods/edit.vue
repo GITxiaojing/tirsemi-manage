@@ -6,34 +6,35 @@
 </template>
 
 <script>
-import Detail from "./components/goodsDetail";
-import { getGoodsInfo, updateGoods } from "@/api/goods";
+import { getGoodsInfo, updateGoods } from '@/api/goods'
+import Detail from './components/goodsDetail'
+
 export default {
-  name: "goods-edit",
+  name: 'GoodsEdit',
   components: { Detail },
-  data () {
+  data() {
     return {
       goodsInfo: null,
-      showSpin: false
+      showSpin: false,
     }
   },
   created() {
-    console.log(123, "create");
-    this.getGoodsInfo();
+    console.log(123, 'create')
+    this.getGoodsInfo()
   },
   activated() {
-    console.log(234, "activated");
-    this.getGoodsInfo();
+    console.log(234, 'activated')
+    this.getGoodsInfo()
   },
   deactivated() {
-    console.log(342, "deactivated");
+    console.log(342, 'deactivated')
   },
   beforeDestroy() {
-    console.log(333, "beforeDestroy");
+    console.log(333, 'beforeDestroy')
   },
   methods: {
     getGoodsInfo() {
-      let query = this.$route.query
+      const { query } = this.$route
       if (query && query.id) {
         this.showSpin = true
         getGoodsInfo({
@@ -45,22 +46,22 @@ export default {
             this.$Message.error(res.errmsg)
           }
           this.showSpin = false
-        }).catch(err => {
+        }).catch((err) => {
           console.log('err: ', err)
         })
       }
     },
-    updateGoods (data) {
+    updateGoods(data) {
       console.log(222, data)
-      updateGoods(data).then(res => {
+      updateGoods(data).then((res) => {
         console.log(333, res)
         this.$Message.success(res.errmsg)
-      }).catch(err => {
-        console.log('err: '. err)
+      }).catch((err) => {
+        console.log('err: ', err)
       })
-    }
+    },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

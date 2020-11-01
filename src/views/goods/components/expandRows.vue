@@ -31,9 +31,9 @@
 
 <script>
 export default {
-    name: 'expand-row',
-    props: {
-        row: Object
-    }
+  name: 'ExpandRow',
+  props: {
+    row: Object,
+  },
 }
 </script>

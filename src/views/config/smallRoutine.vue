@@ -4,7 +4,7 @@
 
 <script>
 export default {
-    name: 'small-routine'
+  name: 'SmallRoutine',
 }
 </script>
 

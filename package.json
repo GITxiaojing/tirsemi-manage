@@ -8,6 +8,7 @@
     "init": "webpack --config ./build/webpack.dev.config.js",
     "dev": "webpack-dev-server --config ./build/webpack.dev.config.js",
     "build": "webpack --config ./build/webpack.prod.config.js",
+    "lint": "eslint --fix --ext .js,.vue src/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "xiaojing",
@@ -25,8 +26,15 @@
     "vuex": "^3.4.0"
   },
   "devDependencies": {
+    "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
     "css-loader": "^3.5.3",
+    "eslint": "^7.12.1",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-import-resolver-webpack": "^0.13.0",
+    "eslint-loader": "^4.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-vue": "^7.1.0",
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^6.0.0",
     "happypack": "^5.0.1",

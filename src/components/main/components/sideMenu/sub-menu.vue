@@ -24,13 +24,14 @@
 </template>
 
 <script>
-import mixin from "./mixin";
+import mixin from './mixin'
+
 export default {
-  name: "sub-menu",
+  name: 'SubMenu',
   mixins: [mixin],
-  mounted () {
-  }
-};
+  mounted() {
+  },
+}
 </script>
 
 <style lang="less">

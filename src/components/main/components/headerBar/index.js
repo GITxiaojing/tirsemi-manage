@@ -1,3 +1,3 @@
-import HeaderBar from './header-bar.vue'
+import HeaderBar from './header-bar'
 
 export default HeaderBar

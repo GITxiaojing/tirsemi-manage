@@ -21,31 +21,31 @@
 import routeUtil from '@/utils/routeUtil'
 
 export default {
-    name: 'header-bar',
-    props: {
-        collapsed: {
-            type: Boolean,
-            default: false
-        }
+  name: 'HeaderBar',
+  props: {
+    collapsed: {
+      type: Boolean,
+      default: false,
     },
-    computed: {
-        breadcrumbList () {
-            return this.$store.state.app.breadcrumbList
-        }
+  },
+  computed: {
+    breadcrumbList() {
+      return this.$store.state.app.breadcrumbList
     },
-    data () {
-        return {
+  },
+  data() {
+    return {
 
-        }
-    },
-    methods: {
-        handleCollapsedChange () {
-            this.$emit('on-coll-change', !this.collapsed)
-        },
-        showTitle (item) {
-            return routeUtil.showTitle(item)
-        }
     }
+  },
+  methods: {
+    handleCollapsedChange() {
+      this.$emit('on-coll-change', !this.collapsed)
+    },
+    showTitle(item) {
+      return routeUtil.showTitle(item)
+    },
+  },
 }
 </script>
 

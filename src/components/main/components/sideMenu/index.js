@@ -1,1 +1,1 @@
-export { default } from './side-menu.vue'
+export { default } from './side-menu'

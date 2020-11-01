@@ -100,12 +100,13 @@
 </template>
 
 <script>
-import { getGoodsList, delGoods } from "@/api/goods";
-import exportExcel from "@/utils/exportExcel";
-import expandRows from "./components/expandRows";
-var changePageSize = false;
+import { getGoodsList, delGoods } from '@/api/goods'
+import exportExcel from '@/utils/exportExcel'
+import expandRows from './components/expandRows'
+
+let changePageSize = false
 export default {
-  name: "goods-list",
+  name: 'GoodsList',
   components: { expandRows },
   data() {
     return {
@@ -113,214 +114,213 @@ export default {
       tbData: [],
       tbCols: [
         {
-          type: "expand",
+          type: 'expand',
           width: 50,
-          slot: "expandRow",
-          render: (h, params) => {
-            return h(expandRows, {
-              props: {
-                row: params.row,
-              },
-            });
-          },
+          slot: 'expandRow',
+          render: (h, params) => h(expandRows, {
+            props: {
+              row: params.row,
+            },
+          }),
         },
         {
-          key: "id",
-          align: "center",
-          title: "商品ID",
+          key: 'id',
+          align: 'center',
+          title: '商品ID',
           minWidth: 100,
         },
         {
-          key: "name",
-          align: "center",
-          title: "名称",
+          key: 'name',
+          align: 'center',
+          title: '名称',
           minWidth: 200,
         },
         {
-          key: "picUrl",
-          align: "center",
-          title: "图片",
-          slot: "img",
+          key: 'picUrl',
+          align: 'center',
+          title: '图片',
+          slot: 'img',
           minWidth: 100,
         },
         {
-          key: "shareUrl",
-          align: "center",
-          title: "分享图",
-          slot: "shareUrl",
+          key: 'shareUrl',
+          align: 'center',
+          title: '分享图',
+          slot: 'shareUrl',
           minWidth: 100,
         },
         {
-          key: "detail",
-          align: "center",
-          title: "详情",
-          slot: "detail",
+          key: 'detail',
+          align: 'center',
+          title: '详情',
+          slot: 'detail',
           minWidth: 100,
         },
         {
-          key: "counterPrice",
-          align: "center",
-          title: "市场售价",
+          key: 'counterPrice',
+          align: 'center',
+          title: '市场售价',
           minWidth: 100,
         },
         {
-          key: "retailPrice",
-          align: "center",
-          title: "当前价格",
+          key: 'retailPrice',
+          align: 'center',
+          title: '当前价格',
           minWidth: 100,
         },
         {
-          key: "isNew",
-          align: "center",
-          title: "是否新品",
-          slot: "isNew",
+          key: 'isNew',
+          align: 'center',
+          title: '是否新品',
+          slot: 'isNew',
           minWidth: 100,
         },
         {
-          key: "isHot",
-          align: "center",
-          title: "是否热品",
-          slot: "isHot",
+          key: 'isHot',
+          align: 'center',
+          title: '是否热品',
+          slot: 'isHot',
           minWidth: 100,
         },
         {
-          key: "saleStatus",
-          align: "center",
-          title: "是否在售",
-          slot: "saleStatus",
+          key: 'saleStatus',
+          align: 'center',
+          title: '是否在售',
+          slot: 'saleStatus',
           minWidth: 100,
         },
         {
-          key: "",
-          align: "center",
-          title: "操作",
-          slot: "operate",
+          key: '',
+          align: 'center',
+          title: '操作',
+          slot: 'operate',
           width: 200,
         },
       ],
-      goodsId: "", // 商品ID
-      goodsSn: "", // 商品编号
-      goodsName: "", // 商品名称
+      goodsId: '', // 商品ID
+      goodsSn: '', // 商品编号
+      goodsName: '', // 商品名称
       tableHeight: 0,
       total: 0,
       pageNum: 1,
       pageSize: 10,
       showDetail: false,
-      goodsDetail: "",
-    };
+      goodsDetail: '',
+    }
   },
   mounted() {
-    this.resizeTable();
-    window.addEventListener("resize", this.resizeTable);
-    this.getGoodsList();
+    this.resizeTable()
+    window.addEventListener('resize', this.resizeTable)
+    this.getGoodsList()
   },
   beforeDestroy() {
-    window.removeEventListener("resize", this.resizeTable);
+    window.removeEventListener('resize', this.resizeTable)
   },
   methods: {
     resizeTable() {
-      let tableWrap = this.$refs.tableWrap;
+      let { tableWrap } = this.$refs
       if (tableWrap) {
-        this.tableHeight = tableWrap.offsetHeight;
+        this.tableHeight = tableWrap.offsetHeight
       }
     },
     //  获取列表
     getGoodsList() {
-      this.tbLoading = true;
+      this.tbLoading = true
       let params = {
         goodsId: this.goodsId,
         goodsSn: this.goodsSn,
         name: this.goodsName,
         page: this.pageNum,
         limit: this.pageSize,
-      };
+      }
       getGoodsList(params)
         .then((res) => {
           if (res.errno === 0) {
-            let data = res.data || {};
-            this.total = data.total || 0;
-            this.tbData = data.list || [];
+            let data = res.data || {}
+            this.total = data.total || 0
+            this.tbData = data.list || []
           } else {
-            this.total = 0;
-            this.tbData = [];
+            this.total = 0
+            this.tbData = []
           }
-          this.tbLoading = false;
+          this.tbLoading = false
         })
         .catch((err) => {
-          console.log("err: ", err);
-        });
+          console.log('err: ', err)
+        })
     },
     // 添加
     addGoods() {
       this.$router.push({
-        name: "goods-create",
-      });
+        name: 'goods-create',
+      })
     },
     // 导出Excel
     exportExcel() {
-      console.log(this.$refs.table);
-      exportExcel(this.$refs.table.columns, this.tbData, "text.xlsx");
+      console.log(this.$refs.table)
+      exportExcel(this.$refs.table.columns, this.tbData, 'text.xlsx')
     },
     // 查看详情
     lookDetail(row) {
-      this.showDetail = true;
-      this.goodsDetail = row.detail;
+      this.showDetail = true
+      this.goodsDetail = row.detail
     },
     // 修改页码
     onChangePage(pageNum) {
-      this.pageNum = pageNum;
+      this.pageNum = pageNum
       if (changePageSize) {
         // changePageSize会触发这个方法
-        changePageSize = false;
-        return;
+        changePageSize = false
+        return
       }
-      this.pageNum = pageNum;
-      this.getGoodsList();
+      this.pageNum = pageNum
+      this.getGoodsList()
     },
     // 修改每页条数
     onChangePageSize(pageSize) {
-      this.pageSize = pageSize;
-      changePageSize = true;
-      this.onChangePage(1);
+      this.pageSize = pageSize
+      changePageSize = true
+      this.onChangePage(1)
     },
     //  编辑商品
     editGoods(row) {
       this.$router.push({
-        name: "goods-edit",
+        name: 'goods-edit',
         query: {
           id: row.id,
         },
-      });
+      })
     },
     // 打开删除提示框
     openDelModal(row) {
       this.$Modal.confirm({
-        title: "提示",
-        content: "是否删除该条数据",
-        okText: "确定",
-        cancelText: "取消",
+        title: '提示',
+        content: '是否删除该条数据',
+        okText: '确定',
+        cancelText: '取消',
         onOk: () => {
-          this.onDel(row);
+          this.onDel(row)
         },
-      });
+      })
     },
     // 进行数据的删除操作
     onDel(row) {
       delGoods({ id: row.id })
         .then((res) => {
           if (res.errno === 0) {
-            // this.$Message.success(res.data)
-            this.pageNum = 1;
-            this.getGoodsList();
+            this.$Message.success('删除成功')
+            this.pageNum = 1
+            this.getGoodsList()
           } else {
+            this.$Message.error(res.errmsg)
           }
         })
         .catch((err) => {
-          console.log("err: ", err);
-        });
+          console.log('err: ', err)
+        })
     },
   },
-};
+}
 </script>
 
 <style lang="less">

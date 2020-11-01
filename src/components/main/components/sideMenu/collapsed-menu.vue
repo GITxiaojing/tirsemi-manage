@@ -17,21 +17,22 @@
 
 <script>
 import mixin from './mixin'
+
 export default {
-    name: 'collapsed-menu',
-    mixins: [mixin],
-    props: {
-        menu: {
-            type: Object,
-            default: () => {}
-        }
+  name: 'CollapsedMenu',
+  mixins: [mixin],
+  props: {
+    menu: {
+      type: Object,
+      default: () => {},
     },
-    methods: {
-        handleClick (name) {
-            console.log('name: ', name)
-            this.$emit('on-click', name)
-        }
-    }
+  },
+  methods: {
+    handleClick(name) {
+      console.log('name: ', name)
+      this.$emit('on-click', name)
+    },
+  },
 }
 </script>
 

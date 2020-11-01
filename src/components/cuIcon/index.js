@@ -1,1 +1,1 @@
-export {default} from './cuIcon'
+export { default } from './cuIcon'

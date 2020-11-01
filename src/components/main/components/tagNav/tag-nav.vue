@@ -9,8 +9,16 @@
     <Dropdown class="tag-close-btn" transfer @on-click="handleTagOption">
       <Icon type="ios-close-circle-outline" size="18" />
       <DropdownMenu slot="list">
-        <DropdownItem class="cus-dropdown-item" name="all">关闭所有</DropdownItem>
-        <DropdownItem class="cus-dropdown-item" name="other">关闭其他</DropdownItem>
+        <DropdownItem
+class="cus-dropdown-item"
+name="all"
+          >关闭所有</DropdownItem
+        >
+        <DropdownItem
+class="cus-dropdown-item"
+name="other"
+          >关闭其他</DropdownItem
+        >
       </DropdownMenu>
     </Dropdown>
     <div
@@ -19,7 +27,11 @@
       @mousewheel="handleScroll"
       @DOMMouseScroll="handleScroll"
     >
-      <div class="scroll-body" ref="scrollBody" :style="'left: ' + scrollLeft + 'px'">
+      <div
+        class="scroll-body"
+        ref="scrollBody"
+        :style="'left: ' + scrollLeft + 'px'"
+      >
         <Tag
           v-for="item in list"
           :name="item.name"
@@ -31,7 +43,8 @@
           :closable="item.name !== $config.homeName"
           @on-close="handleClose(item)"
           @on-change="changeTag(item)"
-        >{{showTitle(item)}}</Tag>
+          >{{ showTitle(item) }}</Tag
+        >
       </div>
     </div>
   </div>
@@ -42,64 +55,69 @@ import routeUtil from '@/utils/routeUtil'
 import beforeClose from '@/router/before-close'
 
 export default {
-  name: "tag-nav",
+  name: 'TagNav',
   props: {
     value: Object,
     collapsed: Boolean,
     list: {
       type: Array,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   data() {
     return {
-      scrollLeft: 0
-    };
-  },
-  computed: {
-    currentRoute () {
-      let {name, meta, query, params} = this.value
-      return {name, meta, query, params}
+      scrollLeft: 0,
     }
   },
+  computed: {
+    currentRoute() {
+      const {
+        name, meta, query, params,
+      } = this.value
+      return {
+        name,
+        meta,
+        query,
+        params,
+      }
+    },
+  },
   watch: {
-    collapsed (cur) {
+    collapsed() {
       setTimeout(() => {
         this.scrollToLeft(0)
       }, 200)
-    }
+    },
   },
   methods: {
-    showTitle (item) {
+    showTitle(item) {
       return routeUtil.showTitle(item)
     },
     /**
      * 处理滚动事件
      */
     handleScroll(e) {
-      e = e || window.event;
-      let type = e.type;
-      let delta = e.wheelDelta ? e.wheelDelta : -(e.detail || 0) * 40;
-      this.scrollToLeft(delta);
+      e = e || window.event
+      // let { type } = e
+      let delta = e.wheelDelta ? e.wheelDelta : -(e.detail || 0) * 40
+      this.scrollToLeft(delta)
     },
 
     /**
      * 滚动距离
      */
     scrollToLeft(offset) {
-      let outerWidth = this.$refs.scrollCon.offsetWidth;
-      let bodyWidth = this.$refs.scrollBody.offsetWidth;
+      let outerWidth = this.$refs.scrollCon.offsetWidth
+      let bodyWidth = this.$refs.scrollBody.offsetWidth
       if (offset > 0) {
-        this.scrollLeft = Math.min(0, this.scrollLeft + offset);
+        this.scrollLeft = Math.min(0, this.scrollLeft + offset)
+      } else if (bodyWidth > outerWidth) {
+        this.scrollLeft = Math.max(
+          this.scrollLeft + offset,
+          outerWidth - bodyWidth,
+        )
       } else {
-        if (bodyWidth > outerWidth) {
-          this.scrollLeft = Math.max(
-            this.scrollLeft + offset,
-            outerWidth - bodyWidth
-          );
-        } else {
-          this.scrollLeft = 0;
-        }
+        this.scrollLeft = 0
       }
     },
 
@@ -108,12 +126,15 @@ export default {
      */
     handleTagOption(name) {
       if (name === 'other') {
-        let res = this.list.filter(item => {
-          return item.name === this.$config.homeName || routeUtil.routeEqual(this.currentRoute, item)
-        })
+        let res = this.list.filter(
+          (item) => item.name === this.$config.homeName
+            || routeUtil.routeEqual(this.currentRoute, item),
+        )
         this.$emit('on-close', res, name)
       } else {
-        let res = this.list.filter(item => {return item.name === this.$config.homeName})
+        let res = this.list.filter(
+          (item) => item.name === this.$config.homeName,
+        )
         this.$emit('on-close', res, name, this.currentRoute)
       }
     },
@@ -122,7 +143,7 @@ export default {
      * 判断是否是当前路由
      */
     isCurrentTag(item) {
-      return routeUtil.routeEqual(this.currentRoute, item);
+      return routeUtil.routeEqual(this.currentRoute, item)
     },
 
     /**
@@ -130,15 +151,17 @@ export default {
      */
     handleClose(item) {
       let flag = true
-      if (item.meta && item.meta.beforeCloseName && item.meta.beforeCloseName in beforeClose) {
-        beforeClose[item.meta.beforeCloseName].catch(
-          flag = false
-        )
+      if (
+        item.meta
+        && item.meta.beforeCloseName
+        && item.meta.beforeCloseName in beforeClose
+      ) {
+        beforeClose[item.meta.beforeCloseName].catch((flag = false))
       }
       if (flag) {
-        let res = this.list.filter(route => {
-          return !routeUtil.routeEqual(route, item)
-        })
+        let res = this.list.filter(
+          (route) => !routeUtil.routeEqual(route, item),
+        )
         this.$emit('on-close', res, undefined, item)
       }
     },
@@ -153,11 +176,11 @@ export default {
     /**
      * 移动到可视区域
      */
-    moveToView (dom) {
-
-    }
-  }
-};
+    moveToView(dom) {
+      console.log(111, dom)
+    },
+  },
+}
 </script>
 
 <style lang="less">

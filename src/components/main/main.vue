@@ -27,59 +27,69 @@
 </template>
 
 <script>
-import HeaderBar from "./components/headerBar"
-import FullScreen from './components/fullscreen'
-import User from './components/user'
-import Language from './components/language'
-import TagNav from './components/tagNav'
-import SideMenu from './components/sideMenu'
 import { mapMutations } from 'vuex'
 import routeUtil from '@/utils/routeUtil'
-import mixin from './components/sideMenu/mixin'
 import routers from '@/router/routes'
+import HeaderBar from './components/headerBar'
+import FullScreen from './components/fullscreen'
+import User from './components/user'
+// import Language from './components/language'
+import TagNav from './components/tagNav'
+import SideMenu from './components/sideMenu'
+import mixin from './components/sideMenu/mixin'
 
 export default {
-  name: "Main",
-  components: { HeaderBar, FullScreen, User, Language, TagNav, SideMenu },
+  name: 'Main',
+  components: {
+    HeaderBar, FullScreen, User, TagNav, SideMenu,
+  },
   mixins: [mixin],
   data() {
     return {
       collapsed: false,
-      isFullscreen: false
+      isFullscreen: false,
     }
   },
   computed: {
-    menuList () {
+    menuList() {
       return this.$store.getters.menuList
     },
-    tagNavList () {
+    tagNavList() {
       return this.$store.state.app.tagNavList
-    }
+    },
   },
   watch: {
-    '$route'(cur) {
+    $route(cur) {
       console.log(11111111, cur)
-      let {name, meta, query, params} = cur
+      const {
+        name, meta, query, params,
+      } = cur
       this.addTag({
-        route: {name, meta, query, params},
-        type: 'push'
+        route: {
+          name, meta, query, params,
+        },
+        type: 'push',
       })
       this.setBreadcrumb(cur)
       this.setTagNavList(routeUtil.calcTagNavList(this.tagNavList, cur))
       this.$refs.sideMenu.updateOpenNames(name)
-    }
+    },
   },
   mounted() {
     this.setHomeRoute(routers)
     this.setTagNavList()
-    let {name, meta, query, params} = this.$route
+    const {
+      name, meta, query, params,
+    } = this.$route
     this.addTag({
-      route: {name, meta, query, params}
+      route: {
+        name, meta, query, params,
+      },
     })
     this.setBreadcrumb(this.$route)
-    if (!this.tagNavList.find(item => routeUtil.routeEqual(item, this.$route))) {
+    if (!this.tagNavList.find((item) => routeUtil.routeEqual(item, this.$route))) {
       this.$router.push({
-        name: this.$config.homeName
+        name: this.$config.homeName,
       })
     }
     this.$refs.sideMenu.updateOpenNames(name)
@@ -90,56 +100,54 @@ export default {
       'setTagNavList',
       'closeTag',
       'setHomeRoute',
-      'addTag'
+      'addTag',
     ]),
     /**
      * 改变菜单折叠状态
      */
-    changeCollapsed (status) {
+    changeCollapsed(status) {
       this.collapsed = status
     },
     /**
      * 菜单选择
      */
-    turnToPage (name) {
-     this.$router.push({
-       name: name
-     })
+    turnToPage(name) {
+      this.$router.push({
+        name,
+      })
     },
     /**
      * 点击标签
      */
-    handleClickTag (item) {
-      let { name, query, params} = item
+    handleClickTag(item) {
+      const { name, query, params } = item
       this.$router.push({
         name,
         query,
-        params
+        params,
       })
     },
 
     /**
      * 关闭标签
      */
-    handleTagClose (result, type, route) {
+    handleTagClose(result, type, route) {
       if (type !== 'other') {
         if (type === 'all') {
           this.turnToPage(this.$config.homeName)
-        } else {
-          if (routeUtil.routeEqual(this.$route, route)) {
-            this.closeTag(route)
-          }
+        } else if (routeUtil.routeEqual(this.$route, route)) {
+          this.closeTag(route)
         }
       }
       this.setTagNavList(result)
     },
     // 登出系统
-    onLogout () {
+    onLogout() {
       this.$store.dispatch('logout').then(() => {
-        location.reload()
+        window.location.reload()
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

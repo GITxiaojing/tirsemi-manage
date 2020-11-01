@@ -1,17 +1,17 @@
 import axios from '@/utils/request'
 
 export const login = (data) => {
-    return axios.request({
-        data: data,
-        method: 'post',
-        url: '/admin/auth/login'
-    })
+  return axios({
+    data,
+    method: 'post',
+    url: '/admin/auth/login',
+  })
 }
 
 export const logout = (data) => {
-    return axios.request({
-        data: data,
-        method: 'post',
-        url: '/admin/auth/logout'
-    })
+  return axios({
+    data,
+    method: 'post',
+    url: '/admin/auth/logout',
+  })
 }

@@ -53,40 +53,42 @@
 import { getDashboard } from '@/api/home'
 
 export default {
-  name: "home",
+  name: 'Home',
   data() {
     return {
-        dashboardInfo: {}
-    };
+      dashboardInfo: {},
+    }
   },
-  created () {
-      this.getDashboard()
+  created() {
+    this.getDashboard()
   },
   methods: {
-      getDashboard () {
-          getDashboard().then(res => {
-              if (res.errno === 0) {
-                  let data = res.data || {}
-                  this.dashboardInfo = {
-                      goodsTotal: data.goodsTotal,
-                      orderTotal: data.orderTotal,
-                      productTotal: data.productTotal,
-                      userTotal: data.userTotal
-                  }
-              } else {
-                  this.dashboardInfo = {
-                      goodsTotal: 0,
-                      orderTotal: 0,
-                      productTotal: 0,
-                      userTotal: 0
-                  }
-              }
-          }).catch(err => {
-              console.log('err: ', err)
-          })
-      }
-  }
-};
+    getDashboard() {
+      getDashboard()
+        .then((res) => {
+          if (res.errno === 0) {
+            const data = res.data || {}
+            this.dashboardInfo = {
+              goodsTotal: data.goodsTotal,
+              orderTotal: data.orderTotal,
+              productTotal: data.productTotal,
+              userTotal: data.userTotal,
+            }
+          } else {
+            this.dashboardInfo = {
+              goodsTotal: 0,
+              orderTotal: 0,
+              productTotal: 0,
+              userTotal: 0,
+            }
+          }
+        })
+        .catch((err) => {
+          console.log('err: ', err)
+        })
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>
@@ -136,7 +138,6 @@ export default {
   }
 }
 </style>
-
 
 <style lang="less">
 .home-page {

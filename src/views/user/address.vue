@@ -4,11 +4,10 @@
 
 <script>
 export default {
-    name: 'addr'
+  name: 'Addr',
 }
 </script>
 
 <style lang="less" scoped>
 
 </style>
-

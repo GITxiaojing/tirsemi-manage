@@ -20,16 +20,16 @@
 
 <script>
 export default {
-    name: 'user',
-    methods: {
-        handleClick (name) {
-            if (name === 'message') {
-                this.$emit('on-message')
-            } else {
-                this.$emit('on-logout')
-            }
-        }
-    }
+  name: 'User',
+  methods: {
+    handleClick(name) {
+      if (name === 'message') {
+        this.$emit('on-message')
+      } else {
+        this.$emit('on-logout')
+      }
+    },
+  },
 }
 </script>
 
