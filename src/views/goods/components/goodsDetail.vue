@@ -142,11 +142,11 @@
           </div>
         </FormItem>
         <FormItem label="所属分类" prop="categoryId">
-          <Cascader
+          <!-- <Cascader
             v-model="formData.categoryId"
             :data="categoryList"
             clearable
-          ></Cascader>
+          ></Cascader> -->
         </FormItem>
         <FormItem label="所属品牌商">
           <Select v-model="formData.brandId" clearable>
@@ -376,8 +376,11 @@
 </template>
 
 <script>
+import tinymce from 'tinymce/tinymce'
+import 'tinymce/themes/silver/theme'
 import Editor from '@tinymce/tinymce-vue'
 import { getCateAndBrand } from '@/api/goods'
+import { assetsPath } from '@/config'
 
 export default {
   name: 'GoodsCreate',
@@ -413,11 +416,13 @@ export default {
       }, // 商品介绍表单
       goodsImgs: [], // 商品图片,
       hoverImg: '', // hover的图片
-      keyordList: [{ name: '标签' }], // 关键字列表
+      keyordList: [], // 关键字列表
       keyword: '', // 关键字
       showAddInput: false, // 是否显示增加关键字的input框
       tinymceInit: {
+        // language_url: '/public/static/tinymce/lang/zh_CN.js',
         language: 'zh_CN',
+        // skin_url: '/public/static/tinymce/skins/ui/oxide-dark',
         height: 500,
         plugins: [
           'print preview searchreplace autolink directionality visualblocks visualchars fullscreen image link media template code codesample table charmap hr pagebreak nonbreaking anchor insertdatetime advlist lists wordcount imagetools textpattern help emoticons autosave bdmap indent2em autoresize lineheight formatpainter axupimgs',

@@ -12,7 +12,13 @@ module.exports = webpackMerge(webpackBaseConfig, {
 	devtool: 'inline-source-map',
 	devServer: {
 		contentBase: path.resolve(rootPath, 'dist'),
-        hot: true,
+		hot: true,
+		overlay: {   // 是否在浏览器出现蒙层，并显示错误和告警
+			warnings: false, // true为告警时也显示蒙层并提示，false则不显示提示
+			errors: true
+		},
+		quiet: true,
+		compress: true, // 启用gzip压缩
 		...config.dev
 	},
 	plugins: [

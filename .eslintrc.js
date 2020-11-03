@@ -62,7 +62,7 @@ module.exports = {
     'key-spacing': [0, { beforeColon: false, afterColon: true }], // 对象字面量中冒号的前后空格
     'lines-around-comment': 0, // 行前行后备注
     'linebreak-style': [0, 'windows'], // 换行风格
-    eqeqeq: 1, // 使用全等
+    eqeqeq: 0, // 使用全等
     'no-param-reassign': 1, // 给参数重新赋值
     'no-unused-vars': [2, { vars: 'all', args: 'after-used' }], // 不能有声明后未被使用的变量或参数
     'max-len': 0, // 字符串的最大长度
@@ -73,8 +73,9 @@ module.exports = {
     'no-unused-expressions': [2, {
       allowShortCircuit: true,
     }],
-    'import/prefer-default-export': 1,
+    'import/prefer-default-export': 0,
     'import/no-unresolved': [2, { commonjs: true, amd: true }],
+    'import/no-extraneous-dependencies': 'off',
   },
   settings: {
     'import/extensions': { // 解决webpack配置省略后缀后，eslint报错的问题

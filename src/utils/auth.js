@@ -1,5 +1,5 @@
 import Cookie from 'js-cookie'
-import config from '@/config'
+import config from '../config'
 
 /**
  * 设置cookie
@@ -17,6 +17,5 @@ export const getToken = () => Cookie.get(config.TOKENKEY)
  * 移除cookie
  */
 export const removeToken = () => {
-  console.log(233)
   Cookie.remove(config.TOKENKEY)
 }

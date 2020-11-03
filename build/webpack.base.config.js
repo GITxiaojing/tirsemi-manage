@@ -8,7 +8,8 @@ module.exports = {
   entry: '@/main.js',
   output: {
     path: path.resolve(rootPath, 'dist'),
-    filename: '[name].js',
+    // publicPath: '/', // 输出解析文件的目录，url 相对于 HTML 页面, 配置url上的基础路径，配置/时，访问路径是http://ip:port/#/，配置/manage时，访问路径是http://ip:port/manage/#/
+    filename: '[name].js'
   },
   module: {
     rules: [
@@ -16,12 +17,18 @@ module.exports = {
         test: /\.vue$/,
         use: 'vue-loader',
       },
-      // {
-      //   test: /\.(vue|js)$/,
-      //   use: ['eslint-loader'],
-      //   exclude: [/node_modules/, /test/, /test1/],
-      //   enforce: 'pre',
-      // },
+      {
+        test: /\.(vue|js)$/,
+        use: [{
+          loader: 'eslint-loader',
+          options: {
+            quiet: true, // 设置为true会忽略警告
+            fix: true // 自动修复
+          }
+        }],
+        exclude: [/node_modules/, /test/, /test1/],
+        enforce: 'pre',
+      },
       {
         test: /\.(jpg|png)$/,
         use: [
@@ -29,7 +36,7 @@ module.exports = {
             loader: 'url-loader',
             options: {
               esModule: false,
-              limit: 1024,
+              limit: 10000,
             },
           },
         ],

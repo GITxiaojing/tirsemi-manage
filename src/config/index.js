@@ -1,4 +1,5 @@
 const os = require('os')
+const path = require('path')
 
 function getNetworkIp() {
   let needHost = ''
@@ -20,6 +21,7 @@ function getNetworkIp() {
 }
 const host = getNetworkIp()
 module.exports = {
+  assetsPath: path.resolve(__dirname, '../../public'),
   homeName: 'home',
   TOKENKEY: 'X-Tirsemi-Admin-Token',
   useEslint: true,

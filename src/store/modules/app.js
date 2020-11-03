@@ -1,7 +1,7 @@
 import routeUtil from '@/utils/routeUtil'
 import routers from '@/router/routes'
 import router from '@/router'
-import config from '@/config'
+import config from '../../config'
 
 const closePage = (state, route) => {
   let { tagNavList } = state
