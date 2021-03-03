@@ -1,10 +1,11 @@
 const vueLoaderPlugin = require('vue-loader/lib/plugin')
 const path = require('path')
-
 const rootPath = path.resolve(__dirname, '../')
 const utils = require('./utils')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = {
+  // publicPath: path.resolve(rootPath, 'public/'),
   entry: '@/main.js',
   output: {
     path: path.resolve(rootPath, 'dist'),
@@ -70,6 +71,12 @@ module.exports = {
   },
   plugins: [
     new vueLoaderPlugin(),
+    new CopyWebpackPlugin({
+      patterns: [{
+        from: path.join(rootPath, '/public/static'),
+        to: path.join(rootPath, '/dist/static/')
+      }]
+    })
   ],
   resolve: {
     alias: {

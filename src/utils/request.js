@@ -15,6 +15,7 @@ instance.interceptors.request.use(cof => {
   return cof
 }, (err) => {
   console.log('err: ', err)
+  Promise.reject(err)
 })
 instance.interceptors.response.use(res => {
   if (res.status === 200) {
@@ -30,6 +31,7 @@ instance.interceptors.response.use(res => {
   }
 }, (err) => {
   console.log('err: ', err)
+  Promise.reject(err)
 })
 
 export default instance

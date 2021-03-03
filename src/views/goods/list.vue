@@ -20,7 +20,7 @@
         class="filter-item"
         icon="md-search"
         type="primary"
-        @click="getGoodsList"
+        @click="handleSearch"
         >查找</Button
       >
       <Button
@@ -223,6 +223,10 @@ export default {
         this.tableHeight = tableWrap.offsetHeight
       }
     },
+    handleSearch () {
+      this.pageNum = 1
+      this.getGoodsList()
+    },
     //  获取列表
     getGoodsList() {
       this.tbLoading = true
@@ -267,6 +271,7 @@ export default {
     },
     // 修改页码
     onChangePage(pageNum) {
+      console.log(124, pageNum)
       this.pageNum = pageNum
       if (changePageSize) {
         // changePageSize会触发这个方法

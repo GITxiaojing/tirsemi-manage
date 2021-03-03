@@ -14,7 +14,7 @@
         <FormItem label="商品名称" prop="name">
           <Input v-model="formData.name" />
         </FormItem>
-        <FormItem label="市场售价">
+        <FormItem label="市场售价" prop="counterPrice">
           <Input v-model="formData.counterPrice">
             <p slot="append">元</p>
           </Input>
@@ -37,7 +37,7 @@
             <Radio :label="0" :true-value="1" :false-value="0">未售</Radio>
           </RadioGroup>
         </FormItem>
-        <FormItem label="商品图片">
+        <FormItem label="商品图片" prop="picUrl">
           <div class="imgs-wrap">
             <div
               v-if="formData.picUrl"
@@ -73,7 +73,7 @@
           </div>
         </FormItem>
         <FormItem>
-          <div slot="label">
+          <div slot="label" prop="gallery">
             宣传画廊
             <Tooltip content="宣传画廊最多上传5张图片!">
               <CommonIcon type="ios-information-circle"></CommonIcon>
@@ -131,6 +131,7 @@
               v-focus
               class="input-size"
               @keyup.enter.native="addKeyword"
+              @on-blur="addKeyword"
               focus
               v-model="keyword"
               v-if="showAddInput"
@@ -142,11 +143,11 @@
           </div>
         </FormItem>
         <FormItem label="所属分类" prop="categoryId">
-          <!-- <Cascader
+          <Cascader
             v-model="formData.categoryId"
             :data="categoryList"
             clearable
-          ></Cascader> -->
+          ></Cascader>
         </FormItem>
         <FormItem label="所属品牌商">
           <Select v-model="formData.brandId" clearable>
@@ -312,7 +313,7 @@
           >
         </FormItem>
         <FormItem label="货品售价" prop="price">
-          <Input v-model="products.price" />
+          <Input v-model.trim="products.price" />
         </FormItem>
         <FormItem label="货品数量" prop="number">
           <Input v-model="products.number" />
@@ -377,10 +378,12 @@
 
 <script>
 import tinymce from 'tinymce/tinymce'
-import 'tinymce/themes/silver/theme'
+import 'tinymce/themes/silver'
 import Editor from '@tinymce/tinymce-vue'
 import { getCateAndBrand } from '@/api/goods'
 import { assetsPath } from '@/config'
+import { validNumber } from '@/utils/validators'
+import 'tinymce/plugins/media'
 
 export default {
   name: 'GoodsCreate',
@@ -409,7 +412,7 @@ export default {
         gallery: [],
         unit: '',
         keywords: [],
-        categoryId: [],
+        categoryId: ['0'],
         brandId: '',
         brief: '',
         detail: '',
@@ -420,10 +423,11 @@ export default {
       keyword: '', // 关键字
       showAddInput: false, // 是否显示增加关键字的input框
       tinymceInit: {
-        // language_url: '/public/static/tinymce/lang/zh_CN.js',
         language: 'zh_CN',
-        // skin_url: '/public/static/tinymce/skins/ui/oxide-dark',
+        base_url: '/static/tinymce/',
+        language_url: '/static/tinymce/langs/zh_CN.js',
         height: 500,
+        theme: 'silver',
         plugins: [
           'print preview searchreplace autolink directionality visualblocks visualchars fullscreen image link media template code codesample table charmap hr pagebreak nonbreaking anchor insertdatetime advlist lists wordcount imagetools textpattern help emoticons autosave bdmap indent2em autoresize lineheight formatpainter axupimgs',
         ],
@@ -432,6 +436,69 @@ export default {
           'styleselect formatselect fontselect fontsizeselect | blockquote subscript superscript removeformat | table image media charmap emoticons hr pagebreak insertdatetime print preview | fullscreen | bdmap indent2em lineheight formatpainter axupimgs',
         ],
         fontsize_formats: '12px 14px 16px 18px 24px 36px 48px 56px 72px',
+        // 图片处理
+        images_upload_handler: (blobInfo, success, failure) => {
+          const fd = new FormData()
+          fd.append('file', blobInfo.blob())
+          console.log('图片', fd)
+        },
+        file_picker_types: 'media',
+        vedio_template_callback: (data) => {
+          return '<video width="' + data.width + '" height="' + data.height + '"' 
+          + (data.poster ? ' poster="' + data.poster + '"' : '') + ' controls="controls">\n' 
+          + '<source src="' + data.source + '"' + (data.sourcemime ? ' type="' + data.sourcemime + '"' : '') 
+          + ' />\n' + (data.altsource ? '<source src="' + data.altsource + '"' 
+          + (data.altsourcemime ? ' type="' + data.altsourcemime + '"' : '') + ' />\n' : '') + '</video>'
+        },
+        media_live_embeds: true,
+        // 本地上传处理
+        file_picker_callback: (cb, value, meta) => {
+          if (meta.filetype === 'media') {
+            const self = this
+            const input = document.createElement('input')
+            input.setAttribute('type', 'file')
+            let file
+            let xhr
+            input.onchange = function () {
+              file = this.files[0]
+              xhr = new XMLHttpRequest()
+              xhr.open('post', self.uploadUrl)
+              xhr.withCredentials = true
+              xhr.upload.onprogress = function (e) {
+                console.log('onprogress: ', e)
+                const percent = e.loaded / e.total * 100
+                if (percent < 100) {
+                  tinymce.activeEditor.setProgressState(true) // 是否显示loading状态
+                } else {
+                  tinymce.activeEditor.setProgressState(false)
+                }
+              }
+              xhr.onerror = function () {
+                console.log(xhr.status)
+                tinymce.activeEditor.setProgressState(false)
+                return
+              }
+              xhr.onload = function () {
+                if (xhr.status < 200 || this.status >= 300) {
+                  console.log('http error', xhr.status)
+                  return
+                }
+                const json = JSON.parse(xhr.responseText)
+                if (json.errno === 0) {
+                  const mediaLocation = json.data.url
+                  cb(mediaLocation, {title: file.name})
+                } else {
+                  console.log(json.msg)
+                  return
+                }
+              }
+              const formData = new FormData()
+              formData.append('file', file)
+              xhr.send(formData)
+            }
+            input.click()
+          }
+        }
       }, // 初始化tinymce插件的参数
       validateRules: {
         name: [
@@ -440,8 +507,24 @@ export default {
         goodsSn: [
           { required: true, message: '商品编号不能为空', trigger: 'blur' },
         ],
+        counterPrice: [
+          { required: true, type: 'number',
+            transform(value) {
+              return Number(value)
+            }, 
+            validator: (rule, value, callback) => {
+              validNumber(rule, value, callback, '市场售价')
+            },
+            trigger: 'blur' }
+        ],
+        picUrl: [
+          { required: true, message: '商品图片不能为空', trigger: 'blur' }
+        ],
+        gallery: [
+          { required: true, type: 'array', message: '宣传不能为空', trigger: 'change' }
+        ],
         categoryId: [
-          // { required: true, message: "所属分类不能为空", trigger: 'blur'}
+          { required: true, type: 'array', message: "所属分类不能为空", trigger: 'change'}
         ],
       }, // 校验表单
       defaultGoodInfo: {
@@ -554,19 +637,38 @@ export default {
         ],
         price: [
           {
-            type: 'number',
             required: true,
-            message: '货品售价不能为空',
+            type: 'number',
+            transform(value) {
+              return Number(value)
+            }, 
+            validator: (rule, value, callback) => {
+              validNumber(rule, value, callback, '货品售价')
+            },
             trigger: 'blur',
           },
         ],
         number: [
           {
-            type: 'number',
             required: true,
-            message: '货品数量不能为空',
+            type: 'number',
+            transform(value) {
+              return Number(value)
+            }, 
+            validator: (rule, value, callback) => {
+              if (!value && value != 0) {
+                callback(new Error(`货品数量不能为空`))
+              }
+              if (window.isNaN(value)) {
+                callback(new Error('货品数量应为数字'))
+              }
+              if (value % 1 != 0 || value <= 0) {
+                callback(new Error('请输入大于0的整数'))
+              }
+              callback()
+            },
             trigger: 'blur',
-          },
+          }
         ],
       }, // 商品库存添加货品表单校验
       attrTbData: [], // 商品参数表格数据
@@ -810,6 +912,11 @@ export default {
 
     // 添加关键字
     addKeyword() {
+      if (!this.keyword.length) {
+        this.showAddInput = false
+        this.keyword = ''
+        return
+      }
       this.formData.keywords.push(this.keyword)
       this.showAddInput = false
       this.keyword = ''
